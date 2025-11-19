@@ -13,6 +13,8 @@ namespace QMB
         WindowCallback m_onClose = nullptr;
         WindowCallback m_onPaint = nullptr;
         WindowCallback m_onResize = nullptr;
+        WindowCallback m_onFileDrop = nullptr;
+
 
     protected:
         LRESULT on_event(UINT msg, WPARAM wParam, LPARAM lParam) override
@@ -31,7 +33,11 @@ namespace QMB
             case WM_SIZE:
                 if (m_onResize) return m_onResize(m_Handle, wParam, lParam);
                 break;
+            case WM_DROPFILES:
+                if (m_onFileDrop) return m_onFileDrop(m_Handle, wParam, lParam);
+                break;
             }
+
 
             // fallback to base class
             return WidgetBase::on_event(msg, wParam, lParam);
@@ -39,6 +45,10 @@ namespace QMB
 
     public:
         Window() = default;
+        Window(HWND handle)
+        {
+            m_Handle = handle;
+        }
 
         void init(
             HINSTANCE application,
@@ -46,13 +56,15 @@ namespace QMB
             int x, int y, int w, int h,
             WindowCallback onClose = nullptr,
             WindowCallback onPaint = nullptr,
-            WindowCallback onResize = nullptr
+            WindowCallback onResize = nullptr,
+            WindowCallback onFileDrop = nullptr
+
         )
         {
             m_onClose = onClose;
             m_onPaint = onPaint;
             m_onResize = onResize;
-
+            m_onFileDrop = onFileDrop;
             init_impl(
                 registered,
                 0,                 // styleExtended
@@ -66,6 +78,8 @@ namespace QMB
                 IDC_ARROW,         // default cursor
                 (HBRUSH)(COLOR_WINDOW + 1) // default background
             );
+            DragAcceptFiles(m_Handle, TRUE);
+
         }
     };
 
