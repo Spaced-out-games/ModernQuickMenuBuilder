@@ -1,0 +1,182 @@
+{
+  "meta": {
+    "version": "1.0.7",
+    "generated_at": "2025-11-18T19:26:00Z",
+    "flags": {
+      "debug": false,
+      "experimental": true,
+      "tags": [ "alpha", "unstable", "beta-release" ]
+    }
+  },
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "email": "alice@example.com",
+      "roles": [ "admin", "editor" ],
+      "preferences": {
+        "theme": "dark",
+        "notifications": {
+          "email": true,
+          "sms": false,
+          "in_app": {
+            "sound": "chime",
+            "volume": 0.85
+          }
+        }
+      },
+      "projects": [
+        {
+          "project_id": "p001",
+          "permissions": [ "read", "write", "deploy" ],
+          "milestones": [
+            {
+              "name": "design",
+              "completed": true
+            },
+            {
+              "name": "prototype",
+              "completed": false
+            },
+            {
+              "name": "final",
+              "completed": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "email": null,
+      "roles": [ "viewer" ],
+      "preferences": {
+        "theme": "light",
+        "notifications": {
+          "email": false,
+          "sms": true,
+          "in_app": null
+        }
+      },
+      "projects": []
+    }
+  ],
+  "settings": {
+    "max_users": 250,
+    "features": {
+      "beta": [ "realtime_sync", "ai_assistant" ],
+      "deprecated": [],
+      "experimental_limits": {
+        "cache": {
+          "soft_limit": 2048,
+          "hard_limit": 4096,
+          "strategies": [
+            {
+              "name": "LRU",
+              "enabled": true
+            },
+            {
+              "name": "LFU",
+              "enabled": false
+            },
+            {
+              "name": "Random",
+              "enabled": false
+            }
+          ]
+        }
+      }
+    },
+    "ui_layout": {
+      "dock_tree": {
+        "type": "split",
+        "orientation": "horizontal",
+        "ratio": 0.5,
+        "children": [
+          {
+            "type": "panel",
+            "id": "left-panel",
+            "widgets": [ "project_list", "user_inspector" ]
+          },
+          {
+            "type": "split",
+            "orientation": "vertical",
+            "ratio": 0.3,
+            "children": [
+              {
+                "type": "panel",
+                "id": "top-right",
+                "widgets": [ "editor", "search" ]
+              },
+              {
+                "type": "panel",
+                "id": "bottom-right",
+                "widgets": [ "console", "debugger" ],
+                "config": {
+                  "log_level": "verbose",
+                  "filters": [ "info", "warn", "error" ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "analytics": {
+    "events": [
+      {
+        "event_id": "evt_0001",
+        "type": "user_login",
+        "timestamp": 1731950370,
+        "metadata": {
+          "ip": "192.168.1.25",
+          "ua": "TestAgent/4.2"
+        }
+      },
+      {
+        "event_id": "evt_0002",
+        "type": "edit",
+        "timestamp": 1731950433,
+        "metadata": {
+          "file": "scene.json",
+          "changes": [
+            {
+              "op": "add",
+              "path": "/nodes/5",
+              "value": {
+                "type": "mesh",
+                "id": "cube"
+              }
+            },
+            {
+              "op": "replace",
+              "path": "/nodes/2/name",
+              "value": "player_spawn"
+            },
+            {
+              "op": "remove",
+              "path": "/nodes/0"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "weird_cases": {
+    "unicode": "Hello World",
+    "escaped": "Line1\nLine2\tTabbed \"Quote\"",
+    "empty_object": {},
+    "empty_array": [],
+    "very_large_number": 9223372036854775807,
+    "fractional": 0.00000001234,
+    "mixed_array": [
+      1,
+      "two",
+      null,
+      { "k": 3 },
+      [ 4, 5, 6 ]
+    ]
+  }
+}
