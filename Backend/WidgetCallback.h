@@ -1,42 +1,21 @@
 #pragma once
-#include <windows.h>
-#include <cassert>
+
 
 namespace QMB
 {
-
-	struct Application
-	{
-		HINSTANCE m_Application = nullptr;
+    class WidgetBase;
 
 
-		// Default constructor
-		Application();
-		~Application() = default;
+    using paint_pfn_t = LRESULT(*)(WidgetBase*, WPARAM, LPARAM);
+    using event_pfn_t = LRESULT(*)(WidgetBase*, WPARAM, LPARAM);
+    using mouse_pfn_t = LRESULT(*)(WidgetBase*, WPARAM, LPARAM);
 
-
-		// Initializes the application
-		void init();
-
-
-		// Returns true if the Application is valid
-		operator bool() const;
-		operator HINSTANCE() const;
-
-		//virtual void on_init() = 0;
-
-	};
-	/* All in WMB
-    * 
-    *     using paint_pfn_t = LRESULT(*)(WidgetBase&, WPARAM, LPARAM);
-        using event_pfn_t = LRESULT(*)(WidgetBase&, WPARAM, LPARAM);
-        using mouse_pfn_t = LRESULT(*)(WidgetBase&, WPARAM, LPARAM);
-	* struct WidgetCallbacks {
+    struct WidgetCallbacks {
         paint_pfn_t on_paint = nullptr;
 
         mouse_pfn_t on_mouse_enter = nullptr;
-        mouse_pfn_t on_mouse_exit = nullptr;
         mouse_pfn_t on_mouse_move = nullptr;
+        mouse_pfn_t on_mouse_exit = nullptr;
         mouse_pfn_t on_mouse_down_L = nullptr;
         mouse_pfn_t on_mouse_up_L = nullptr;
         mouse_pfn_t on_mouse_down_R = nullptr;
@@ -51,6 +30,6 @@ namespace QMB
         event_pfn_t on_char = nullptr;
         event_pfn_t on_construct = nullptr;
         event_pfn_t on_destruct = nullptr;
+        event_pfn_t on_file_drop = nullptr;
     };
-    */
 }

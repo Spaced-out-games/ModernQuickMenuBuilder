@@ -34,9 +34,7 @@ namespace QMB
         inline static bool registered = true;
 
         // 
-        callback_t m_onClick = nullptr;
-        callback_t m_onRelease = nullptr;
-        callback_t m_onHover = nullptr;
+
 
     protected:
         // Internal event handler
@@ -45,15 +43,15 @@ namespace QMB
             switch (msg)
             {
             case WM_LBUTTONDOWN:
-                if (m_onClick) return m_onClick(m_Handle, wParam, lParam);
+                //if (m_onClick) return m_onClick(m_Handle, wParam, lParam);
                 break;
 
             case WM_LBUTTONUP:
-                if (m_onRelease) return m_onRelease(m_Handle, wParam, lParam);
+                //if (m_onRelease) return m_onRelease(m_Handle, wParam, lParam);
                 break;
 
             case WM_MOUSEMOVE:
-                if (m_onHover) return m_onHover(m_Handle, wParam, lParam);
+                //if (m_onHover) return m_onHover(m_Handle, wParam, lParam);
                 break;
             }
 
@@ -67,16 +65,10 @@ namespace QMB
         void init(
             HWND parent,
             HINSTANCE application,
-            int x, int y, int w, int h,
-            callback_t onClick = nullptr,
-            callback_t onRelease = nullptr,
-            callback_t onHover = nullptr
+            int x, int y, int w, int h
         )
         {
             registered = true;
-            m_onClick = onClick;
-            m_onRelease = onRelease;
-            m_onHover = onHover;
 
             init_impl(
                 registered,
@@ -94,7 +86,7 @@ namespace QMB
             SetWindowSubclass(m_Handle, WidgetSubclassProc, 1, reinterpret_cast<DWORD_PTR>(this));
 
         }
+
     };
 
-    // Define the static bool
 }
