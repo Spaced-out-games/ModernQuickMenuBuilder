@@ -1,4 +1,5 @@
 #pragma once
+
 #include "WidgetBase.h"
 #include <commctrl.h>
 #include <windows.h>

@@ -1,9 +1,7 @@
-#include <iostream>
-#include "../Backend/Application.h"
-#include "Window.h"
-#include "Button.h"
-#include <cassert>
-#include "../Backend/Image.h"
+#include "Windows/Application.h"
+#include "Windows/Window.h"
+#include "Windows/Button.h"
+#include "Windows/Image.h"
 #include "components/paint.h"
 #include "components/ui.h"
 #include <format>

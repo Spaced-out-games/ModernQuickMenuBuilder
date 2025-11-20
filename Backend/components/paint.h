@@ -1,7 +1,8 @@
 #pragma once
 #include <cassert>
-#include "../WidgetBase.h"
-#include "../Image.h"
+#include "../Windows/WidgetBase.h"
+#include "../Windows/Image.h"
+
 
 using namespace Windows;
 

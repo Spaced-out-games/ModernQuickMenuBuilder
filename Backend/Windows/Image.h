@@ -1,6 +1,5 @@
 #pragma once
-#include "../thirdparty/stb_image/stb_image.h"
-#include "../thirdparty/stb_image/stb_image_resize.h"
+
 
 #include <windows.h>
 #include <string>

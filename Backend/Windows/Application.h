@@ -1,0 +1,31 @@
+#pragma once
+#include <windows.h>
+#include <cassert>
+
+namespace Windows
+{
+
+	struct Application
+	{
+		HINSTANCE m_Application = nullptr;
+
+
+		// Default constructor
+		Application();
+		~Application() = default;
+
+
+		// Initializes the application
+		void init();
+
+        int run();
+
+
+		// Returns true if the Application is valid
+		operator bool() const;
+		operator HINSTANCE() const;
+
+		//virtual void on_init() = 0;
+
+	};
+}
