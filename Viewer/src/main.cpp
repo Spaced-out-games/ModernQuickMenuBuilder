@@ -19,11 +19,21 @@ LRESULT on_win_close(HWND hwnd, WPARAM, LPARAM) {
 
 // this gets called when the window gets told to update by Windows
 LRESULT on_win_paint(WidgetBase* widget, WPARAM, LPARAM) { // bp here
+
+	// early exit if using an invalid pointer
 	if (!widget) return 0;
 
-	HWND hwnd = widget->operator HWND(); // use accessor instead of casting
+	// try to get a window
 	QMB::Window* window = dynamic_cast<QMB::Window*>(widget);
+
+	// early exit if not a window
 	if (!window || !window->img) return 0;
+
+	// get the window's HWND
+	HWND hwnd = window->handle();
+
+
+	// If we can't cast to a window
 
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
@@ -32,9 +42,8 @@ LRESULT on_win_paint(WidgetBase* widget, WPARAM, LPARAM) { // bp here
 	GetClientRect(hwnd, &rc);
 	int width = rc.right - rc.left;
 	int height = rc.bottom - rc.top;
-	Image resized = window->img.resized(width, height); // bp
 
-	resized.draw(ps, hdc, hwnd, 0, 0); // optimized out?
+	window->img.draw(hdc, 0, 0, width, height); // optimized out?
 
 
 	EndPaint(hwnd, &ps);
@@ -70,7 +79,7 @@ LRESULT on_drop(WidgetBase* widget, WPARAM wParam, LPARAM lParam)
 			//wid
 
 			//widget->img.free();
-			window->img = std::move(QMB::Image(path));
+			Image::load_image(window->img, path);
 			InvalidateRect(hwnd, NULL, TRUE);
 		}
 	}
