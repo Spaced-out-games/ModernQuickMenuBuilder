@@ -1,12 +1,21 @@
 #include "Application.h"
 
-namespace QMB
+namespace Windows
 {
 	Application::Application()
 	{
 
 	}
 
+	int Application::run()
+	{
+		MSG msg;
+		while (GetMessage(&msg, nullptr, 0, 0)) { // bp
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		return 0;
+	}
 
 	void Application::init()
 	{

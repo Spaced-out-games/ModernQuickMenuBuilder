@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <cassert>
 
-namespace QMB
+namespace Windows
 {
 
 	struct Application
@@ -17,6 +17,8 @@ namespace QMB
 
 		// Initializes the application
 		void init();
+
+        int run();
 
 
 		// Returns true if the Application is valid
