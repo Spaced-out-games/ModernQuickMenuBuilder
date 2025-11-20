@@ -6,10 +6,7 @@
 
 namespace QMB
 {
-	Image::Image(const std::string& path)
-	{
-		load_image(*this, path);
-	}
+	
 	Image Image::load_image(const std::string& path)
 	{
 		Image img = {};
@@ -72,34 +69,8 @@ namespace QMB
 		}
 
 		// return the image
-
 		return img;
 
-
-
-
-		/*
-
-
-		Image img = {};
-
-
-		if (!img.m_Raw) return img; // don't bother with resizing it.
-
-		img.m_Raw = (unsigned char*)malloc(new_width * new_height * 4);
-
-
-		img.m_ChannelCount = 4;
-		img.m_Width = new_width;
-		img.m_Height = new_height;
-		stbir_resize_uint8(
-			m_Raw, m_Width, m_Height, 0,       // source
-			img.m_Raw, new_width, new_height, 0, // destination
-			4                              // channels (RGBA)
-		);
-
-		return img;
-		*/
 	}
 
 	Image::operator BITMAPINFO() const {
@@ -117,24 +88,20 @@ namespace QMB
 		return m_Raw;
 	}
 
-	void Image::draw(PAINTSTRUCT ps, HDC hdc, HWND hwnd, int x, int y) const {
+	void Image::draw(HDC hdc, int x, int y, int w, int h) const {
 		if (!m_Raw) return;
-
-		//;
 
 		BITMAPINFO bmi = static_cast<BITMAPINFO>(*this);
 
 		StretchDIBits(
 			hdc,
-			x, y, m_Width, m_Height,
+			x, y, w, h,
 			0, 0, m_Width, m_Height,
 			m_Raw,
 			&bmi,
 			DIB_RGB_COLORS,
 			SRCCOPY
 		);
-
-		//ReleaseDC(hwnd, hdc); // or EndPaint in WM_PAINT
 	}
 
 }

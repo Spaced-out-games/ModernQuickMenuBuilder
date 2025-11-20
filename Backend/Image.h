@@ -20,11 +20,13 @@ namespace QMB
 		    Image() = default;
 
 		    // Construct from path
-		    Image(const std::string& path);
+		    //Image(const std::string& path);
 
+            // Creates and loads a new image
             static [[nodiscard]] Image load_image(const std::string& path);
-            static void load_image(Image& img, const std::string& path);
 
+            // hot-reloads a new image
+            static void load_image(Image& img, const std::string& path);
 
 		    Image resized(int new_width, int new_height);
 
@@ -34,10 +36,14 @@ namespace QMB
 
 		    // Frees the image
 		    void free();
-		    void draw(PAINTSTRUCT ps, HDC hdc, HWND hwnd, int x, int y) const;
+
+            // Draws the image
+		    void draw(HDC hdc, int x, int y, int w, int h) const;
+
+            // Compatability with the WinAPI
 		    explicit operator BITMAPINFO() const;
         
-            // validity
+            // validity check
             operator bool() const;
 
 
