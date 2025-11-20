@@ -8,8 +8,22 @@ namespace QMB
 {
 	Image::Image(const std::string& path)
 	{
-		m_Raw = stbi_load(path.c_str(), &m_Width, &m_Height, &m_ChannelCount, 4);
+		load_image(*this, path);
 	}
+	Image Image::load_image(const std::string& path)
+	{
+		Image img = {};
+		load_image(img, path);
+		return img;
+
+	}
+	void Image::load_image(Image& img, const std::string& path)
+	{
+
+		if (img) img.free();
+		img.m_Raw = stbi_load(path.c_str(), &(img.m_Width), &(img.m_Height), &(img.m_ChannelCount), 4);
+	}
+
 
 	void Image::free()
 	{
