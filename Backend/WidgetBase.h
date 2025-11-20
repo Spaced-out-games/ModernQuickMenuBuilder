@@ -3,7 +3,7 @@
 #include <iostream>
 #include "WidgetCallback.h"
 
-namespace QMB
+namespace Windows
 {
 
 

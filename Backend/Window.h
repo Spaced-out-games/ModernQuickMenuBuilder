@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "WidgetCallback.h"
 
-namespace QMB
+namespace Windows
 {
 
     class Window : public WidgetBase

@@ -2,8 +2,8 @@
 #include "WidgetBase.h"
 #include <commctrl.h>
 #include <windows.h>
-#pragma comment(lib, "comctl32.lib")
-namespace QMB
+#pragma comment(lib, "comctl32.lib") // I don't remember this lol
+namespace Windows
 {
 
     LRESULT CALLBACK WidgetSubclassProc(

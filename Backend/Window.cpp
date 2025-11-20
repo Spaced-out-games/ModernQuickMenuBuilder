@@ -1,7 +1,7 @@
 #include "Window.h"
 
 
-namespace QMB
+namespace Windows
 {
     
     Window::Window(HWND handle)

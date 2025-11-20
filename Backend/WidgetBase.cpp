@@ -1,7 +1,7 @@
 #include "WidgetBase.h"
 #include <cassert>
 
-namespace QMB
+namespace Windows
 {
     LRESULT EventDelegate(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {

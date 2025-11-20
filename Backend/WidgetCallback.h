@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace QMB
+namespace Windows
 {
     class WidgetBase;
 
