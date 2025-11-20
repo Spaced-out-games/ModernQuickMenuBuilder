@@ -4,89 +4,14 @@
 #include "Button.h"
 #include <cassert>
 #include "../Backend/Image.h"
+#include "components/paint.h"
+#include "components/ui.h"
 #include <format>
-#pragma comment(linker,"\"/manifestdependency:type='win32' \
-name='Microsoft.Windows.Common-Controls' version='6.0.0.0' \
-processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
-using namespace QMB;
+using namespace Windows;
 
-// This gets called when the window closes
-LRESULT on_win_close(HWND hwnd, WPARAM, LPARAM) {
-	MessageBoxW(hwnd, (LPWSTR)L"Window is closing!", (LPWSTR)L"Event", MB_OK);
-	PostQuitMessage(0);
-	return 0;
-}
-
-// this gets called when the window gets told to update by Windows
-LRESULT on_win_paint(WidgetBase* widget, WPARAM, LPARAM) { // bp here
-
-	// early exit if using an invalid pointer
-	if (!widget) return 0;
-
-	// try to get a window
-	QMB::Window* window = dynamic_cast<QMB::Window*>(widget);
-
-	// early exit if not a window
-	if (!window || !window->img) return 0;
-
-	// get the window's HWND
-	HWND hwnd = window->handle();
+static inline Image g_BackgroundImg;
 
 
-	// If we can't cast to a window
-
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hwnd, &ps);
-
-	RECT rc;
-	GetClientRect(hwnd, &rc);
-	int width = rc.right - rc.left;
-	int height = rc.bottom - rc.top;
-
-	window->img.draw(hdc, 0, 0, width, height); // optimized out?
-
-
-	EndPaint(hwnd, &ps);
-	return 0;
-}
-
-
-
-
-
-LRESULT on_drop(WidgetBase* widget, WPARAM wParam, LPARAM lParam)
-{
-	HWND hwnd = (HWND)*widget;
-
-	// get the window pointer
-	QMB::Window* window = (QMB::Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
-	assert(window != nullptr);
-
-	HDROP hDrop = (HDROP)wParam;
-	UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
-
-	for (UINT i = 0; i < fileCount; ++i)
-	{
-		char filePath[MAX_PATH];
-		DragQueryFileA(hDrop, i, filePath, MAX_PATH);
-
-		// Optionally check the extension
-		std::string path(filePath);
-		if (path.ends_with(".bmp") || path.ends_with(".BMP"))
-		{
-			std::cout << std::format("Dropped file {}", path);
-
-			//wid
-
-			//widget->img.free();
-			Image::load_image(window->img, path);
-			InvalidateRect(hwnd, NULL, TRUE);
-		}
-	}
-
-	DragFinish(hDrop);
-	return 0;
-}
 
 
 int main()
@@ -95,18 +20,26 @@ int main()
 	app.init();
 	Window win;
 	win.init(app, (LPWSTR)L"QuickMenuBuilder v. 0.1", 100, 100, 500, 400);
-	//Button button;
-	//button.init(win, app, 0, 0, 200, 200);
-	//SendMessage(button, WM_SETTEXT, 0, (LPARAM)L"Button");
-
-	win.on_file_drop(on_drop);
-	win.on_paint(on_win_paint);
 
 
-	MSG msg;
-	while (GetMessage(&msg, nullptr, 0, 0)) { // bp
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
-	}
+
+
+	win.on_file_drop([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
+		return ui::drag_drop_bg_img(*widget, g_BackgroundImg, wParam, lParam);
+	});
+
+
+
+	win.on_paint([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
+		PAINTSTRUCT ps;
+		HDC hdc;
+		widget->begin_paint(ps, hdc);
+		LRESULT result = paint::render_background_image(*widget, hdc, g_BackgroundImg);
+		widget->end_paint(ps);
+		return result;
+	});
+
+
+	app.run();
 
 }

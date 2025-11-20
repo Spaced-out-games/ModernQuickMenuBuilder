@@ -33,6 +33,12 @@
     <ClInclude Include="WidgetCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="components\paint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="components\ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp">
@@ -45,6 +51,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\paint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\ui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
