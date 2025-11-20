@@ -5,6 +5,9 @@
 
 namespace QMB
 {
+
+    using callback_t = LRESULT(*)(HWND, WPARAM, LPARAM);
+
     LRESULT CALLBACK EventDelegate(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     
@@ -15,7 +18,6 @@ namespace QMB
         
 
         protected:
-        HWND m_Handle = nullptr;
 
         void init_impl(
             bool& registered,
@@ -35,6 +37,8 @@ namespace QMB
         );
 
         public:
+            HWND m_Handle = nullptr;
+
             WidgetBase() = default;
 
             operator bool() const;

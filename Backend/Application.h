@@ -4,6 +4,7 @@
 
 namespace QMB
 {
+
 	struct Application
 	{
 		HINSTANCE m_Application = nullptr;
