@@ -8,52 +8,62 @@ namespace QMB
 
 
 
-    // todo: take in a WidgetBase instead of a HWND
-    //using callback_t = LRESULT(*)(HWND, WPARAM, LPARAM);
-
-
+    
+    ///
+    /// Gives control back to the widget
+    ///
     LRESULT CALLBACK EventDelegate(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 
 
-
+	/// 
+	/// Basic widget type. Stores a callback table and a HWND, and delegates control
+    /// to those callbacks
+	/// 
 	class WidgetBase
 	{
 
         
 
         protected:
+
+            // Windows `window` handle
             HWND m_Handle = nullptr;
+
+            // Callback table
             WidgetCallbacks m_Callbacks = {};
 
-
-        void init_impl(
-            bool& registered,
-            DWORD styleExtended,
-            LPWSTR class_name,
-            LPWSTR name,
-            DWORD style,
-            int x,
-            int y,
-            int w,
-            int h,
-            HWND parent,
-            HMENU menu,
-            HINSTANCE application,
-            LPWSTR cursor_id,
-            HBRUSH bg_brush
-        );
+            // Low-level handle initialization
+            void init_impl(
+                bool& registered,
+                DWORD styleExtended,
+                LPWSTR class_name,
+                LPWSTR name,
+                DWORD style,
+                int x,
+                int y,
+                int w,
+                int h,
+                HWND parent,
+                HMENU menu,
+                HINSTANCE application,
+                LPWSTR cursor_id,
+                HBRUSH bg_brush
+            );
 
         public:
 
 
             ///                                                 ///
-            ///                  constructors                   ///
+            ///                   constructor                   ///
             ///                                                 ///
+            
+
+            // DONT FORGET TO CALL INIT() AFTER THIS!!!!
             WidgetBase() = default;
 
             ///                                                 ///
-            ///                   destructors                   ///
+            ///                    destructor                   ///
             ///                                                 ///
             ~WidgetBase() = default;
 
@@ -61,45 +71,91 @@ namespace QMB
 
 
             
-            // Center brain. Calls everything else
+            // EventDelegate calls this, and this calls the callback table
             virtual LRESULT on_event(UINT msg, WPARAM wParam, LPARAM lParam);
 
             ///                                                 ///
             ///                     getters                     ///
             ///                                                 ///
-            /// 
-            inline event_pfn_t on_file_drop();
+            ///
+            
 
-            inline paint_pfn_t on_paint();
-            inline mouse_pfn_t on_mouse_enter();
-            inline mouse_pfn_t on_mouse_exit();
-            inline mouse_pfn_t on_mouse_move();
-            inline mouse_pfn_t on_mouse_down_L();
-            inline mouse_pfn_t on_mouse_up_L();
-            inline mouse_pfn_t on_mouse_down_R();
-            inline mouse_pfn_t on_mouse_up_R();
+            HWND handle() const;
 
-            inline event_pfn_t on_resize();
-            inline event_pfn_t on_context_menu();
-            inline event_pfn_t on_focus();
-            inline event_pfn_t on_unfocus();
-            inline event_pfn_t on_key_down();
-            inline event_pfn_t on_key_up();
-            inline event_pfn_t on_char();
-            inline event_pfn_t on_construct();
-            inline event_pfn_t on_destruct();
+            // Gets the event hook
+            event_pfn_t on_file_drop();
+
+            // Gets the event hook
+            paint_pfn_t on_paint();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_enter();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_exit();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_move();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_down_L();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_up_L();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_down_R();
+            
+            // Gets the event hook
+            mouse_pfn_t on_mouse_up_R();
+
+
+            // Gets the event hook
+            event_pfn_t on_resize();
+            
+            // Gets the event hook
+            event_pfn_t on_context_menu();
+            
+            // Gets the event hook
+            event_pfn_t on_focus();
+            
+            // Gets the event hook
+            event_pfn_t on_unfocus();
+            
+            // Gets the event hook
+            event_pfn_t on_key_down();
+            
+            // Gets the event hook
+            event_pfn_t on_key_up();
+            
+            // Gets the event hook
+            event_pfn_t on_char();
+            
+            // Gets the event hook
+            event_pfn_t on_construct();
+            
+            // Gets the event hook
+            event_pfn_t on_destruct();
+            
+            // Begins painting
             void begin_paint(PAINTSTRUCT&, HDC&);
+            
+            // Stops painting
             void        end_paint(PAINTSTRUCT&);
 
+            // Checks if the widget is valid
             operator bool() const
             {
                 return m_Handle;
             }
 
+            // Gets widget's native handle
             operator HWND() const
             {
                 return m_Handle;
             }
+
+            // Gets the widget's bounding box
             RECT bounds() const;
 
 
@@ -107,45 +163,115 @@ namespace QMB
             ///                     setters                     ///
             ///                                                 ///
             
+            // Sets the event hook
             void on_paint(paint_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_enter(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_exit(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_move(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_down_L(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_up_L(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_down_R(mouse_pfn_t);
+            
+            // Sets the event hook
             void on_mouse_up_R(mouse_pfn_t);
 
+            // Sets the event hook
             void on_file_drop(event_pfn_t);
+            
+            // Sets the event hook
             void on_resize(event_pfn_t);
+            
+            // Sets the event hook
             void on_context_menu(event_pfn_t);
+            
+            // Sets the event hook
             void on_focus(event_pfn_t);
+            
+            // Sets the event hook
             void on_unfocus(event_pfn_t);
+            
+            // Sets the event hook
             void on_key_down(event_pfn_t);
+            
+            // Sets the event hook
             void on_key_up(event_pfn_t);
+            
+            // Sets the event hook
             void on_char(event_pfn_t);
+            
+            // Sets the event hook
             void on_construct(event_pfn_t);
+            
+            // Sets the event hook
             void on_destruct(event_pfn_t);
             
+
            ///                                                 ///
            ///                     actions                     ///
            ///                                                 ///
-           inline void show() const;
-           inline void hide() const;
-           inline void enable() const;
-           inline void disable() const;
-           inline void resize(int new_width, int new_height) const;
-           inline void move(int new_X, int new_Y) const;
-           inline void move_forward() const;
-           inline void move_backward() const;
-           inline std::string text() const;
-           inline void text(const std::string& text) const;
-           inline void invalidate() const;
-           inline void redraw_now() const;
-           inline void focus(bool) const;
-           inline bool focus() const;
-           inline void capture() const;
-           inline void release() const;
+           
+            
+            // Sets the event hook
+           
+            // Shows the widget
+            void show() const;
+
+            // Hides the widget
+            void hide() const;
+
+            // Enables the widget
+            void enable() const;
+
+            // Disables the widget
+            void disable() const;
+
+            // Resizes the widget
+            void resize(int new_width, int new_height) const;
+
+            // Moves the widget
+            void move(int new_X, int new_Y) const;
+
+            // Moves the widget to the front
+            void move_forward() const;
+
+            // Moves the widget back
+            void move_backward() const;
+
+            // Gets the text contents of the widget
+            std::string text() const;
+
+            // Sets the text contents of the widget
+            void text(const std::string& text) const;
+
+            // Invalidates the draw state of the widget
+            void invalidate() const;
+
+            // Forces this widget to draw immediately
+            void redraw_now() const;
+
+            // Focuses this widget
+            void focus(bool) const;
+
+            // Returns true of this widget is focused
+            bool focus() const;
+
+            // Tells this widget to capture input
+            void capture() const;
+
+            // Tells this widget to release input
+            void release() const;
 
 
 	};

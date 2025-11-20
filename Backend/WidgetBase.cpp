@@ -216,6 +216,8 @@ namespace QMB
     ///                                                 ///
     ///                     getters                     ///
     ///                                                 ///
+    HWND WidgetBase::handle() const { return m_Handle; };
+
     event_pfn_t WidgetBase::on_file_drop() { return m_Callbacks.on_file_drop; }
     paint_pfn_t WidgetBase::on_paint(){ return m_Callbacks.on_paint;}
     mouse_pfn_t WidgetBase::on_mouse_enter(){ return m_Callbacks.on_mouse_enter;}
