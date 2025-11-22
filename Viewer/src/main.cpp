@@ -19,7 +19,13 @@ int main()
 	Window win;
 	win.init(app, (LPWSTR)L"QuickMenuBuilder v. 0.1", 100, 100, 500, 400);
 
+	Button button;
+	button.init(win, app, 0, 0, 30, 30);
 
+	button.on_resize([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
+		widget->hide();
+		return 0;
+	});
 
 
 	win.on_file_drop([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
