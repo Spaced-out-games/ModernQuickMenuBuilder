@@ -19,6 +19,20 @@ namespace Windows
 
 		if (img) img.free();
 		img.m_Raw = stbi_load(path.c_str(), &(img.m_Width), &(img.m_Height), &(img.m_ChannelCount), 4);
+
+
+		// a bit more easy to read imo
+		int area = img.m_Width * img.m_Height;
+
+
+		unsigned char* p = img.m_Raw;
+		unsigned char* end = p + area * 4;
+
+		while (p < end) {
+			std::swap(p[0], p[2]);
+			p += 4;
+		}
+
 	}
 
 
@@ -92,7 +106,7 @@ namespace Windows
 		if (!m_Raw) return;
 
 		BITMAPINFO bmi = static_cast<BITMAPINFO>(*this);
-
+		SetStretchBltMode(hdc, COLORONCOLOR);
 		StretchDIBits(
 			hdc,
 			x, y, w, h,
