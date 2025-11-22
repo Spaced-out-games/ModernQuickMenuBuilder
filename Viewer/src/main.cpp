@@ -37,6 +37,12 @@ int main()
 		return result;
 	});
 
+	win.on_resize([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
+		PAINTSTRUCT ps;
+	widget->invalidate();
+	return 0;
+	});
+
 
 	app.run();
 
