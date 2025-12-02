@@ -206,69 +206,15 @@ namespace Windows
         return rect;
     }
 
-
-
-
-
-
-
-
-    ///                                                 ///
-    ///                     getters                     ///
-    ///                                                 ///
     HWND WidgetBase::handle() const { return m_Handle; };
 
-    event_pfn_t WidgetBase::on_file_drop() { return m_Callbacks.on_file_drop; }
-    paint_pfn_t WidgetBase::on_paint(){ return m_Callbacks.on_paint;}
-    mouse_pfn_t WidgetBase::on_mouse_enter(){ return m_Callbacks.on_mouse_enter;}
-    mouse_pfn_t WidgetBase::on_mouse_exit(){ return m_Callbacks.on_mouse_exit;}
-    mouse_pfn_t WidgetBase::on_mouse_move(){ return m_Callbacks.on_mouse_move;}
-    mouse_pfn_t WidgetBase::on_mouse_down_L(){ return m_Callbacks.on_mouse_down_L;}
-    mouse_pfn_t WidgetBase::on_mouse_up_L(){ return m_Callbacks.on_mouse_up_L;}
-    mouse_pfn_t WidgetBase::on_mouse_down_R(){ return m_Callbacks.on_mouse_down_R ;}
-    mouse_pfn_t WidgetBase::on_mouse_up_R(){ return m_Callbacks.on_mouse_up_R;}
-
-    event_pfn_t WidgetBase::on_resize(){ return m_Callbacks.on_resize;}
-    event_pfn_t WidgetBase::on_context_menu(){ return m_Callbacks.on_context_menu;}
-    event_pfn_t WidgetBase::on_focus(){ return m_Callbacks.on_focus;}
-    event_pfn_t WidgetBase::on_unfocus(){ return m_Callbacks.on_unfocus;}
-    event_pfn_t WidgetBase::on_key_down(){ return m_Callbacks.on_key_down;}
-    event_pfn_t WidgetBase::on_key_up(){ return m_Callbacks.on_key_up;}
-    event_pfn_t WidgetBase::on_char(){ return m_Callbacks.on_char;}
-    event_pfn_t WidgetBase::on_construct(){ return m_Callbacks.on_construct;}
-    event_pfn_t WidgetBase::on_destruct(){ return m_Callbacks.on_destruct;}
-    void WidgetBase::begin_paint(PAINTSTRUCT& ps, HDC& hdc)
-    {
-        hdc = BeginPaint(m_Handle, &ps);
-    }
-    void WidgetBase::end_paint(PAINTSTRUCT& ps) { EndPaint(m_Handle, &ps); }
 
 
 
-    ///                                                 ///
-    ///                     setters                     ///
-    ///                                                 ///
-    void WidgetBase::on_file_drop(event_pfn_t callback) { m_Callbacks.on_file_drop = callback; }
-    void WidgetBase::on_paint(paint_pfn_t callback) {m_Callbacks.on_paint = callback;}
-    void WidgetBase::on_mouse_enter(mouse_pfn_t callback) {m_Callbacks.on_mouse_enter = callback;}
-    void WidgetBase::on_mouse_exit(mouse_pfn_t callback) {m_Callbacks.on_mouse_exit = callback;}
-    void WidgetBase::on_mouse_move(mouse_pfn_t callback) {m_Callbacks.on_mouse_move = callback;}
-    void WidgetBase::on_mouse_down_L(mouse_pfn_t callback) {m_Callbacks.on_mouse_down_L = callback;}
-    void WidgetBase::on_mouse_up_L(mouse_pfn_t callback) {m_Callbacks.on_mouse_up_L = callback;}
-    void WidgetBase::on_mouse_down_R(mouse_pfn_t callback) {m_Callbacks.on_mouse_down_R = callback;}
-    void WidgetBase::on_mouse_up_R(mouse_pfn_t callback) {m_Callbacks.on_mouse_up_R = callback;}
 
 
 
-    void WidgetBase::on_resize(event_pfn_t callback) {m_Callbacks.on_resize = callback;}
-    void WidgetBase::on_context_menu(event_pfn_t callback) {m_Callbacks.on_context_menu = callback;}
-    void WidgetBase::on_focus(event_pfn_t callback) {m_Callbacks.on_focus = callback;}
-    void WidgetBase::on_unfocus(event_pfn_t callback) {m_Callbacks.on_unfocus = callback;}
-    void WidgetBase::on_key_down(event_pfn_t callback) {m_Callbacks.on_key_down = callback;}
-    void WidgetBase::on_key_up(event_pfn_t callback) {m_Callbacks.on_key_up = callback;}
-    void WidgetBase::on_char(event_pfn_t callback) {m_Callbacks.on_char = callback;}
-    void WidgetBase::on_construct(event_pfn_t callback) {m_Callbacks.on_construct = callback;}
-    void WidgetBase::on_destruct(event_pfn_t callback) {m_Callbacks.on_destruct = callback;}
+    
 
 
 

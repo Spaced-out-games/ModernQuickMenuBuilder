@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="vgui\vgui_context.h" />
+    <ClInclude Include="vgui\vgui_widget.h" />
     <ClInclude Include="Windows\Application.h" />
     <ClInclude Include="Windows\Button.h" />
     <ClInclude Include="components\paint.h" />
@@ -34,6 +36,7 @@
     <ClCompile Include="components\ui.cpp" />
     <ClCompile Include="Windows\Image.cpp" />
     <ClCompile Include="Windows\WidgetBase.cpp" />
+    <ClCompile Include="Windows\WidgetCallback.cpp" />
     <ClCompile Include="Windows\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
