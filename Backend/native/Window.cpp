@@ -1,7 +1,7 @@
 #include "Window.h"
 
 
-namespace Windows
+namespace native
 {
     
     Window::Window(HWND handle)

@@ -4,7 +4,7 @@
 #define STB_IMAGE_RESIZE_IMPLEMENTATION
 #include <thirdparty/stb_image/stb_image_resize.h>
 
-namespace Windows
+namespace qmb
 {
 	
 	Image Image::load_image(const std::string& path)

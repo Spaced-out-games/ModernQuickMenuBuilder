@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <string>
 
-namespace Windows
+namespace qmb
 {
 	class Image
 	{

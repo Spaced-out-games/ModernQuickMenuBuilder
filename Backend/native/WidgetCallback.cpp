@@ -1,7 +1,7 @@
 #include "WidgetCallback.h"
 
 
-namespace Windows
+namespace native
 {
     event_pfn_t IWidgetCallbacks::on_file_drop() { return m_Callbacks.on_file_drop; }
     paint_pfn_t IWidgetCallbacks::on_paint() { return m_Callbacks.on_paint; }
