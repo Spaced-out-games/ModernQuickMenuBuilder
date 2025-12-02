@@ -4,7 +4,7 @@
 #include <commctrl.h>
 #include <windows.h>
 #pragma comment(lib, "comctl32.lib") // I don't remember this lol
-namespace Windows
+namespace native
 {
 
     LRESULT CALLBACK WidgetSubclassProc(

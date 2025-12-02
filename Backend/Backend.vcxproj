@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="vgui\vgui_context.h" />
     <ClInclude Include="vgui\vgui_widget.h" />
+    <ClInclude Include="vgui\vgui_window.h" />
     <ClInclude Include="Windows\Application.h" />
     <ClInclude Include="Windows\Button.h" />
     <ClInclude Include="components\paint.h" />

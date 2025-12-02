@@ -4,7 +4,9 @@
 #include "../Windows/Image.h"
 
 
-using namespace Windows;
+using namespace native;
+using namespace qmb;
+
 
 namespace paint
 {

@@ -45,6 +45,9 @@
     <ClInclude Include="vgui\vgui_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vgui\vgui_window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Windows\Application.cpp">

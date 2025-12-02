@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "WidgetCallback.h"
 
-namespace Windows
+namespace native
 {
 
     class Window : public WidgetBase
@@ -18,9 +18,6 @@ namespace Windows
     protected:
 
     public:
-        // For testing purposes. Use something better, dumbass.
-        Image img = {}; 
-
 
         // DONT FORGET TO CALL INIT() AFTER THIS!!!!
         Window() = default;

@@ -1,7 +1,7 @@
 #pragma once
 #include <Windows.h>
 
-namespace Windows
+namespace native
 {
     class WidgetBase;
 

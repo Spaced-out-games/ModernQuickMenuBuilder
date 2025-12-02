@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <cassert>
 
-namespace Windows
+namespace native
 {
 
 	struct Application
