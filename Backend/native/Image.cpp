@@ -49,43 +49,6 @@ namespace qmb
 	{
 		free();
 	}
-	Image Image::resized(int new_width, int new_height)
-	{
-		// if this image is null, create a null image and return it
-		if (!m_Raw) return {};
-
-		// try to allocate a buffer
-		unsigned char* new_img = (unsigned char*)malloc(new_width * new_height * 4);
-
-		// if it fails, return empty image
-		if (!new_img) return {};
-
-		// create an empty image
-		Image img = {};
-
-		// set some internal state. 
-		img.m_Raw = new_img;
-		img.m_ChannelCount = 4;
-		img.m_Width = new_width;
-		img.m_Height = new_height;
-
-		// copy the buffer, resized. Error happens here, per breakpoint
-		int success = stbir_resize_uint8(
-			m_Raw, m_Width, m_Height, 0,       // source
-			img.m_Raw, img.m_Width, img.m_Height, 0, // destination
-			4                              // channels (RGBA)
-		);
-
-		// if resizing somehow fails,return an empty image
-		if (!success) {
-			::free(new_img);
-			return {};
-		}
-
-		// return the image
-		return img;
-
-	}
 
 	Image::operator BITMAPINFO() const {
 		BITMAPINFO bmi = {};

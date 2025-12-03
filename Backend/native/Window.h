@@ -18,6 +18,11 @@ namespace native
     protected:
 
     public:
+        LONG_PTR prevStyle = 0;
+        LONG_PTR prevExStyle = 0;
+        void enable_drag_drop();
+        WINDOWPLACEMENT wpPrev = { sizeof(wpPrev) };
+        bool isFullscreen = false;
 
         // DONT FORGET TO CALL INIT() AFTER THIS!!!!
         Window() = default;
@@ -30,5 +35,6 @@ namespace native
 
         // initializes the window
         void init(HINSTANCE application, LPWSTR title, int x, int y, int w, int h);
+        void ToggleFullscreen();
     };
 }

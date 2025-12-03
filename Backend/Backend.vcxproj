@@ -19,7 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="vgui\vgui.h" />
+    <ClInclude Include="vgui\vgui_action.h" />
+    <ClInclude Include="vgui\vgui_background.h" />
+    <ClInclude Include="vgui\vgui_button.h" />
     <ClInclude Include="vgui\vgui_context.h" />
+    <ClInclude Include="vgui\vgui_scene.h" />
     <ClInclude Include="vgui\vgui_widget.h" />
     <ClInclude Include="vgui\vgui_window.h" />
     <ClInclude Include="native\Application.h" />
@@ -39,6 +44,7 @@
     <ClCompile Include="native\WidgetBase.cpp" />
     <ClCompile Include="native\WidgetCallback.cpp" />
     <ClCompile Include="native\Window.cpp" />
+    <ClCompile Include="vgui\vgui_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />

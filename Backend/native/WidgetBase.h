@@ -31,7 +31,6 @@ namespace native
             HWND m_Handle = nullptr;
 
             // Callback table
-            WidgetCallbacks m_Callbacks = {};
 
             // Low-level handle initialization
             void init_impl(
@@ -72,7 +71,7 @@ namespace native
 
             
             // EventDelegate calls this, and this calls the callback table
-            virtual LRESULT on_event(UINT msg, WPARAM wParam, LPARAM lParam);
+            virtual LRESULT on_event(UINT msg, WPARAM wParam, LPARAM lParam) = 0;
 
             ///                                                 ///
             ///                     getters                     ///

@@ -11,5 +11,5 @@ using namespace qmb;
 
 namespace ui
 {
-	LRESULT drag_drop_bg_img(WidgetBase& widget, Image& target, WPARAM wParam, LPARAM lParam);
+	LRESULT drag_drop_bg_img(HWND hwnd, Image& target, WPARAM wParam, LPARAM lParam);
 }

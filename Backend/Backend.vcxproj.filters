@@ -48,6 +48,21 @@
     <ClInclude Include="vgui\vgui_window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vgui\vgui_button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="native\Application.cpp">
@@ -69,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="native\WidgetCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

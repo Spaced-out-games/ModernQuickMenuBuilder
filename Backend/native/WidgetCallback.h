@@ -36,8 +36,9 @@ namespace native
 
     class IWidgetCallbacks
     {
+        public:
         WidgetCallbacks m_Callbacks = {};
-        //public:
+
 
         // Gets the event hook
         event_pfn_t on_file_drop();
@@ -95,10 +96,10 @@ namespace native
         event_pfn_t on_destruct();
 
         // Begins painting
-        void begin_paint(HWND handle, PAINTSTRUCT&, HDC&);
+        void begin_paint_impl(HWND handle, PAINTSTRUCT&, HDC&);
 
         // Stops painting
-        void        end_paint(HWND handle, PAINTSTRUCT&);
+        void end_paint_impl(HWND handle, PAINTSTRUCT&);
 
 
 

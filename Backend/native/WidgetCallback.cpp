@@ -22,8 +22,8 @@ namespace native
     event_pfn_t IWidgetCallbacks::on_char() { return m_Callbacks.on_char; }
     event_pfn_t IWidgetCallbacks::on_construct() { return m_Callbacks.on_construct; }
     event_pfn_t IWidgetCallbacks::on_destruct() { return m_Callbacks.on_destruct; }
-    void IWidgetCallbacks::begin_paint(HWND handle, PAINTSTRUCT& ps, HDC& hdc) { hdc = BeginPaint(handle, &ps); }
-    void IWidgetCallbacks::end_paint(HWND handle, PAINTSTRUCT& ps) { EndPaint(handle, &ps); }
+    void IWidgetCallbacks::begin_paint_impl(HWND handle, PAINTSTRUCT& ps, HDC& hdc) { hdc = BeginPaint(handle, &ps); }
+    void IWidgetCallbacks::end_paint_impl(HWND handle, PAINTSTRUCT& ps) { EndPaint(handle, &ps); }
 
 
 

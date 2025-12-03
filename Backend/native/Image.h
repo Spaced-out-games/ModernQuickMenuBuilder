@@ -27,8 +27,6 @@ namespace qmb
             // hot-reloads a new image
             static void load_image(Image& img, const std::string& path);
 
-		    Image resized(int new_width, int new_height);
-
 
 		    // Destroys Image
 		    ~Image();
