@@ -16,6 +16,7 @@ namespace vgui
 
 	VWindow::VWindow(Context* vgui_context) : m_vguiContext(vgui_context)
 	{
+        vgui_context->m_Window = this;
         on_mouse_down_L([](WidgetBase* widget, WPARAM wp, LPARAM lp) -> LRESULT {
             // do a dynamic cast to see if the widget is a button type
 
@@ -68,7 +69,6 @@ namespace vgui
             PAINTSTRUCT ps;
             HDC hdc;
             begin_paint(ps, hdc);
-
 
 
             m_vguiContext->draw(hdc);

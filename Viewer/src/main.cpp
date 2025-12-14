@@ -1,16 +1,18 @@
-#include "native/Application.h"
-#include "native/Window.h"
-#include "native/Button.h"
-#include "native/Image.h"
-#include "vgui/vgui_window.h"
-#include "vgui/vgui_context.h"
-#include "vgui/vgui_widget.h"
-#include "vgui/vgui_button.h"
-#include "vgui/vgui_background.h"
-#include "vgui/vgui_scene.h"
+#include "Backend/native/Application.h"
+#include "Backend/native/Window.h"
+#include "Backend/native/Button.h"
+#include "Backend/native/Image.h"
+#include "Backend/vgui/vgui_window.h"
+#include "Backend/vgui/vgui_context.h"
+#include "Backend/vgui/vgui_widget.h"
+#include "Backend/vgui/vgui_button.h"
+#include "Backend/vgui/vgui_background.h"
+#include "Backend/vgui/vgui_page.h"
+#include "Backend/overrides/paint.h"
+#include "Backend/overrides/ui.h"
+#include "Backend/vgui/vgui_build.h"
+#include "thirdparty/json/json.hpp"
 
-#include "components/paint.h"
-#include "components/ui.h"
 #include <format>
 #include <memory>
 using namespace native;
@@ -23,6 +25,13 @@ static inline Image g_BackgroundImg;
 
 int main()
 {
+
+	const std::string sample_widget_path = "C:/Users/devin/Documents/Visual Studio 2022/Projects/ModernQuickMenuBuilder/resources/widget.jsonc";
+
+
+	
+
+
 	// Make an Windows application
 	Application app;
 
@@ -36,51 +45,57 @@ int main()
 
 	// Initialize the window
 	win.init(app, (LPWSTR)L"QuickMenuBuilder v. 0.1", 100, 100, 500, 400);
-
-
-	// Take a guess
-	win.enable_drag_drop();
 	
-	// Includes the background and a virtual button later on
-	vgui::Scene   vgui_test_scene;
-	vgui_context.SetActiveScene(vgui_test_scene);
+	// Make a book
+	std::unique_ptr<Book> book = std::make_unique<Book>();
+
+	// load json
 
 
-
-
-
-
-	// -------------------- set up background image-------------------- //
-
-
-	std::unique_ptr<vgui::VBackground> background = std::make_unique<vgui::VBackground>();
-
-	background->img = qmb::Image::load_image("../resources/morty.jpg");
-
-
-
-
-	// ------------------------ set up a buttion ------------------------ //
-
-
-	std::unique_ptr<vgui::VButton> button = std::make_unique<vgui::VButton>();
-
-	button->bindAction(Action_t::EXIT, "Exitting...");
-
-
-	// ------------------------------------------------------------------ //
-
-
-	// todo: template scene::insert(), scene::get(). Nice ergonomics
 	
-	vgui_test_scene.insert(std::move(background));
-	vgui_test_scene.insert(std::move(button));
 
-	win.ToggleFullscreen();
+
+	
+
+
+
+
+	// Create main menu page
+	//auto main_menu = std::make_unique<Page>();
+
+
+	json file = vgui::load_jsonc(sample_widget_path);
+
+	if (file["settings"]["fullscreen"].get<bool>())
+	{
+		win.ToggleFullscreen();
+	}
+
+
+	auto main_menu = vgui::load_page(file["widgets"]);
+
+
+
+
+
+
+
+	
+
+
+	// Add the page to the book
+	book->insert({ "main-menu", std::move(main_menu) });
+
+
+	// Tell context to use the book
+	vgui_context.SetBook(std::move(book));
+	vgui_context.LoadPage("main-menu");
+	
+
+
+
 	win.redraw_now();
 
-	// triggers a resize event to trigger a redraw
-	//win.resize(720, 720); 
 
 
 	// main loop

@@ -2,7 +2,7 @@
 #include "../native/Image.h"
 #include "vgui_widget.h"
 #include <Windows.h>
-#include "../components/ui.h"
+#include "../overrides/ui.h"
 #include "vgui.h"
 
 
@@ -24,6 +24,18 @@ namespace vgui
 
 		}
 
+		void stretch_to_fit(HWND hwnd)
+		{
+			RECT rc{};
+			if (!GetClientRect(hwnd, &rc))
+				return;
+
+			w = rc.right - rc.left;
+			h = rc.bottom - rc.top;
+
+			InvalidateRect(hwnd, nullptr, TRUE);
+		}
+
 		LRESULT on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) override
 		{
 			
@@ -42,6 +54,7 @@ namespace vgui
 
 			return 0;
 		}
+
 
 		
 	};

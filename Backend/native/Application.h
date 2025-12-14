@@ -1,6 +1,11 @@
 #pragma once
 #include <windows.h>
 #include <cassert>
+#include <memory>
+
+
+
+
 
 namespace native
 {

@@ -1,4 +1,5 @@
 #pragma once
+#include "vgui.h"
 #include "vgui_widget.h"
 #include "vgui_action.h"
 
@@ -9,7 +10,6 @@ namespace vgui
 	{
 		using interact_pfn_t = void(*)(VButton*, int x, int y);
 
-		vgui::Context* m_Owner = nullptr;
 		Action		   m_Action;
 
 		std::string	   argument;
@@ -22,6 +22,17 @@ namespace vgui
 		}
 
 
+		VButton() = default;
+		VButton(Action_t type, const std::string& args): m_Action(type, args)
+		{
+		}
+		VButton(json bounds, json action):Widget(bounds), m_Action(action)
+		{
+
+		}
+
+
+
 
 		virtual LRESULT on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) override
 		{
@@ -31,10 +42,6 @@ namespace vgui
 			{
 				clicked = overlaps(x, y);
 			}
-			//if (msg == WM_MOUSEMOVE && on_mouse_move && overlaps(x, y))
-			//{
-			//	on_mouse_move(this, LOWORD(lp), HIWORD(lp));
-			//}
 			if (msg == WM_LBUTTONUP &&  overlaps(x, y))
 			{
 				if (overlaps(x, y) && clicked)

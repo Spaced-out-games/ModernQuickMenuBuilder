@@ -1,0 +1,21 @@
+{
+
+	"settings": {
+		"fullscreen": false
+	},
+	"widgets": {
+		"exit_btn":
+		{
+				"type": "button",
+				"bounds": [0,0,200,200],
+				"action": ["exit", ""]
+		},
+		"other_btn":
+		{
+				"type": "button",
+				"bounds": [500,0,200,200],
+				"action": ["switch_background", "C:/Users/devin/Pictures/Screenshots/Screenshot (24).png"]
+		}
+
+	}
+}

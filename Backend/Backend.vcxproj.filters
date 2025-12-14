@@ -33,12 +33,6 @@
     <ClInclude Include="native\WidgetCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="components\paint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="components\ui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vgui\vgui_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,7 +54,16 @@
     <ClInclude Include="vgui\vgui_action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vgui\vgui_scene.h">
+    <ClInclude Include="vgui\vgui_page.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="overrides\ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,16 +80,16 @@
     <ClCompile Include="native\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="components\paint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="components\ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="native\WidgetCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgui\vgui_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="overrides\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
