@@ -1,10 +1,12 @@
 #pragma once
 #include <cassert>
-#include "../Windows/WidgetBase.h"
-#include "../Windows/Image.h"
+#include "../native/WidgetBase.h"
+#include "../native/Image.h"
 
 
-using namespace Windows;
+using namespace native;
+using namespace qmb;
+
 
 namespace paint
 {

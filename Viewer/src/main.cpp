@@ -1,11 +1,22 @@
-#include "Windows/Application.h"
-#include "Windows/Window.h"
-#include "Windows/Button.h"
-#include "Windows/Image.h"
-#include "components/paint.h"
-#include "components/ui.h"
+#include "Backend/native/Application.h"
+#include "Backend/native/Window.h"
+#include "Backend/native/Button.h"
+#include "Backend/native/Image.h"
+#include "Backend/vgui/vgui_window.h"
+#include "Backend/vgui/vgui_context.h"
+#include "Backend/vgui/vgui_widget.h"
+#include "Backend/vgui/vgui_button.h"
+#include "Backend/vgui/vgui_background.h"
+#include "Backend/vgui/vgui_page.h"
+#include "Backend/overrides/paint.h"
+#include "Backend/overrides/ui.h"
+#include "Backend/vgui/vgui_build.h"
+#include "thirdparty/json/json.hpp"
+
 #include <format>
-using namespace Windows;
+#include <memory>
+using namespace native;
+using namespace vgui;
 
 static inline Image g_BackgroundImg;
 
@@ -14,42 +25,80 @@ static inline Image g_BackgroundImg;
 
 int main()
 {
+
+	const std::string sample_widget_path = "C:/Users/devin/Documents/Visual Studio 2022/Projects/ModernQuickMenuBuilder/resources/widget.jsonc";
+
+
+	
+
+
+	// Make an Windows application
 	Application app;
+
+	// initialize it
 	app.init();
-	Window win;
+	// make a ui context
+	vgui::Context vgui_context;
+
+	// make a Windows window, capable of VGUI rendering (this is what took forever)
+	vgui::VWindow win(&vgui_context);
+
+	// Initialize the window
 	win.init(app, (LPWSTR)L"QuickMenuBuilder v. 0.1", 100, 100, 500, 400);
+	
+	// Make a book
+	std::unique_ptr<Book> book = std::make_unique<Book>();
 
-	Button button;
-	button.init(win, app, 0, 0, 30, 30);
-
-	button.on_resize([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
-		widget->hide();
-		return 0;
-	});
+	// load json
 
 
-	win.on_file_drop([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
-		return ui::drag_drop_bg_img(*widget, g_BackgroundImg, wParam, lParam);
-	});
+	
+
+
+	
 
 
 
-	win.on_paint([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
-		PAINTSTRUCT ps;
-		HDC hdc;
-		widget->begin_paint(ps, hdc);
-		LRESULT result = paint::render_background_image(*widget, hdc, g_BackgroundImg);
-		widget->end_paint(ps);
-		return result;
-	});
 
-	win.on_resize([](WidgetBase* widget, WPARAM wParam, LPARAM lParam) -> LRESULT {
-		PAINTSTRUCT ps;
-	widget->invalidate();
-	return 0;
-	});
+	// Create main menu page
+	//auto main_menu = std::make_unique<Page>();
 
 
+	json file = vgui::load_jsonc(sample_widget_path);
+
+	if (file["settings"]["fullscreen"].get<bool>())
+	{
+		win.ToggleFullscreen();
+	}
+
+
+	auto main_menu = vgui::load_page(file["widgets"]);
+
+
+
+
+
+
+
+	
+
+
+	// Add the page to the book
+	book->insert({ "main-menu", std::move(main_menu) });
+
+
+	// Tell context to use the book
+	vgui_context.SetBook(std::move(book));
+	vgui_context.LoadPage("main-menu");
+	
+
+
+
+	win.redraw_now();
+
+
+
+	// main loop
 	app.run();
 
 }

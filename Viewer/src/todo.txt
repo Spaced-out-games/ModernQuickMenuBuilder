@@ -1,0 +1,2 @@
+Fix issues with loaded images not scaling after a load
+clean up code some

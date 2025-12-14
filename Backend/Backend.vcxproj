@@ -19,22 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Windows\Application.h" />
-    <ClInclude Include="Windows\Button.h" />
-    <ClInclude Include="components\paint.h" />
-    <ClInclude Include="components\ui.h" />
-    <ClInclude Include="Windows\Image.h" />
-    <ClInclude Include="Windows\WidgetBase.h" />
-    <ClInclude Include="Windows\WidgetCallback.h" />
-    <ClInclude Include="Windows\Window.h" />
+    <ClInclude Include="overrides\ui.h" />
+    <ClInclude Include="vgui\vgui.h" />
+    <ClInclude Include="vgui\vgui_action.h" />
+    <ClInclude Include="vgui\vgui_background.h" />
+    <ClInclude Include="vgui\vgui_build.h" />
+    <ClInclude Include="vgui\vgui_button.h" />
+    <ClInclude Include="vgui\vgui_context.h" />
+    <ClInclude Include="vgui\vgui_error.h" />
+    <ClInclude Include="vgui\vgui_page.h" />
+    <ClInclude Include="vgui\vgui_widget.h" />
+    <ClInclude Include="vgui\vgui_window.h" />
+    <ClInclude Include="native\Application.h" />
+    <ClInclude Include="native\Button.h" />
+    <ClInclude Include="native\Image.h" />
+    <ClInclude Include="native\WidgetBase.h" />
+    <ClInclude Include="native\WidgetCallback.h" />
+    <ClInclude Include="native\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Windows\Application.cpp" />
-    <ClCompile Include="components\paint.cpp" />
-    <ClCompile Include="components\ui.cpp" />
-    <ClCompile Include="Windows\Image.cpp" />
-    <ClCompile Include="Windows\WidgetBase.cpp" />
-    <ClCompile Include="Windows\Window.cpp" />
+    <ClCompile Include="overrides\ui.cpp" />
+    <ClCompile Include="native\Application.cpp" />
+    <ClCompile Include="native\Image.cpp" />
+    <ClCompile Include="native\WidgetBase.cpp" />
+    <ClCompile Include="native\WidgetCallback.cpp" />
+    <ClCompile Include="native\Window.cpp" />
+    <ClCompile Include="vgui\vgui_error.cpp" />
+    <ClCompile Include="vgui\vgui_window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />

@@ -4,9 +4,8 @@
 #endif
 namespace ui
 {
-	LRESULT drag_drop_bg_img(WidgetBase& widget, Image& target, WPARAM wParam, LPARAM lParam)
+	LRESULT drag_drop_bg_img(HWND hwnd, Image& target, WPARAM wParam, LPARAM lParam)
 	{
-		HWND hwnd = widget.handle();
 		HDROP hDrop = (HDROP)wParam;
 		UINT fileCount = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
 
@@ -25,7 +24,7 @@ namespace ui
 
 				Image::load_image(target, path);
 
-				widget.invalidate();
+				InvalidateRect(hwnd, nullptr, TRUE);
 			}
 		}
 

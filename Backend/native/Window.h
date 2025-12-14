@@ -3,7 +3,7 @@
 #include "Image.h"
 #include "WidgetCallback.h"
 
-namespace Windows
+namespace native
 {
 
     class Window : public WidgetBase
@@ -18,9 +18,11 @@ namespace Windows
     protected:
 
     public:
-        // For testing purposes. Use something better, dumbass.
-        Image img = {}; 
-
+        LONG_PTR prevStyle = 0;
+        LONG_PTR prevExStyle = 0;
+        void enable_drag_drop();
+        WINDOWPLACEMENT wpPrev = { sizeof(wpPrev) };
+        bool isFullscreen = false;
 
         // DONT FORGET TO CALL INIT() AFTER THIS!!!!
         Window() = default;
@@ -33,5 +35,6 @@ namespace Windows
 
         // initializes the window
         void init(HINSTANCE application, LPWSTR title, int x, int y, int w, int h);
+        void ToggleFullscreen();
     };
 }

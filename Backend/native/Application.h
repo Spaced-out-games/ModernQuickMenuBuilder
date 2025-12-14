@@ -1,8 +1,13 @@
 #pragma once
 #include <windows.h>
 #include <cassert>
+#include <memory>
 
-namespace Windows
+
+
+
+
+namespace native
 {
 
 	struct Application

@@ -4,7 +4,7 @@
 		"start_fullscreen": true,
 		"starting_scene": "main-menu"
 	},
-	"scenes":
+	"pages":
 	{
 		"main-menu":
 		{

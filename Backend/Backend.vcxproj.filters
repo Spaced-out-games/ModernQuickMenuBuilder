@@ -15,48 +15,81 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Windows\Application.h">
+    <ClInclude Include="native\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\Image.h">
+    <ClInclude Include="native\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\WidgetBase.h">
+    <ClInclude Include="native\WidgetBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\Button.h">
+    <ClInclude Include="native\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\Window.h">
+    <ClInclude Include="native\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Windows\WidgetCallback.h">
+    <ClInclude Include="native\WidgetCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="components\paint.h">
+    <ClInclude Include="vgui\vgui_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="components\ui.h">
+    <ClInclude Include="vgui\vgui_context.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_window.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_button.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_action.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_page.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="overrides\ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_build.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Windows\Application.cpp">
+    <ClCompile Include="native\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Windows\Image.cpp">
+    <ClCompile Include="native\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Windows\WidgetBase.cpp">
+    <ClCompile Include="native\WidgetBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Windows\Window.cpp">
+    <ClCompile Include="native\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="components\paint.cpp">
+    <ClCompile Include="native\WidgetCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="components\ui.cpp">
+    <ClCompile Include="vgui\vgui_window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="overrides\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
