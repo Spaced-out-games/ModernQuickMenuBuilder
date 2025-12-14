@@ -44,7 +44,14 @@
     <ClCompile Include="native\WidgetBase.cpp" />
     <ClCompile Include="native\WidgetCallback.cpp" />
     <ClCompile Include="native\Window.cpp" />
+    <ClCompile Include="vgui\vgui_action.cpp" />
+    <ClCompile Include="vgui\vgui_background.cpp" />
+    <ClCompile Include="vgui\vgui_build.cpp" />
+    <ClCompile Include="vgui\vgui_button.cpp" />
+    <ClCompile Include="vgui\vgui_context.cpp" />
     <ClCompile Include="vgui\vgui_error.cpp" />
+    <ClCompile Include="vgui\vgui_page.cpp" />
+    <ClCompile Include="vgui\vgui_widget.cpp" />
     <ClCompile Include="vgui\vgui_window.cpp" />
   </ItemGroup>
   <ItemGroup>
