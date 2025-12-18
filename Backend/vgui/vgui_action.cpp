@@ -39,13 +39,15 @@ namespace vgui
 
         case SWITCH_PAGE:
             assert(ctx != nullptr);
-            ctx->LoadPage(args);
+            assert(false && "SWITCH_PAGE not implemented");
+            //ctx->LoadPage(args);
             break;
 
         case SWITCH_BACKGROUND:
             assert(ctx != nullptr);
-            ctx->LoadBackground("main-menu", args); // TODO: remove hardcode
-            ctx->m_Window->redraw_now();
+            assert(false && "SWITCH_BACKGROUND not implemented");
+            //ctx->LoadBackground("main-menu", args); // TODO: remove hardcode
+            //ctx->m_Window->redraw_now();
             break;
 
         case OPEN_FILE:
@@ -70,7 +72,7 @@ namespace vgui
     Action::Action(Action_t type_, const std::string& args_)
         : type(type_), args(args_)
     {
-        __debugbreak();
+        //__debugbreak();
     }
 
     Action::Action(json action)

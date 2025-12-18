@@ -23,11 +23,11 @@
     <ClInclude Include="vgui\vgui.h" />
     <ClInclude Include="vgui\vgui_action.h" />
     <ClInclude Include="vgui\vgui_background.h" />
-    <ClInclude Include="vgui\vgui_build.h" />
     <ClInclude Include="vgui\vgui_button.h" />
     <ClInclude Include="vgui\vgui_context.h" />
     <ClInclude Include="vgui\vgui_error.h" />
-    <ClInclude Include="vgui\vgui_page.h" />
+    <ClInclude Include="vgui\vgui_layer.h" />
+    <ClInclude Include="vgui\vgui_node.h" />
     <ClInclude Include="vgui\vgui_widget.h" />
     <ClInclude Include="vgui\vgui_window.h" />
     <ClInclude Include="native\Application.h" />
@@ -44,13 +44,12 @@
     <ClCompile Include="native\WidgetBase.cpp" />
     <ClCompile Include="native\WidgetCallback.cpp" />
     <ClCompile Include="native\Window.cpp" />
+    <ClCompile Include="vgui\vgui.cpp" />
     <ClCompile Include="vgui\vgui_action.cpp" />
     <ClCompile Include="vgui\vgui_background.cpp" />
-    <ClCompile Include="vgui\vgui_build.cpp" />
     <ClCompile Include="vgui\vgui_button.cpp" />
     <ClCompile Include="vgui\vgui_context.cpp" />
     <ClCompile Include="vgui\vgui_error.cpp" />
-    <ClCompile Include="vgui\vgui_page.cpp" />
     <ClCompile Include="vgui\vgui_widget.cpp" />
     <ClCompile Include="vgui\vgui_window.cpp" />
   </ItemGroup>

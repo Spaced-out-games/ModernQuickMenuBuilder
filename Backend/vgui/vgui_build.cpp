@@ -1,7 +1,6 @@
 #include "vgui_build.h"
 
 #include "vgui.h"
-#include "vgui_page.h"
 #include "vgui_button.h"
 #include "vgui_error.h"
 

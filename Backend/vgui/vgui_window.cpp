@@ -16,7 +16,6 @@ namespace vgui
 
 	VWindow::VWindow(Context* vgui_context) : m_vguiContext(vgui_context)
 	{
-        vgui_context->m_Window = this;
         on_mouse_down_L([](WidgetBase* widget, WPARAM wp, LPARAM lp) -> LRESULT {
             // do a dynamic cast to see if the widget is a button type
 
@@ -49,12 +48,8 @@ namespace vgui
             case WM_SIZING:
             case WM_WINDOWPOSCHANGING:
             case WM_SIZE:
-                // notify vgui
-                //m_vguiContext->on_event(handle(), msg, wp, lp);
-                // but STILL let Windows finish the resize!
-               // invalidate();
-                m_vguiContext->on_event(handle(), msg, wp, lp);
-                //redraw_now();
+                // Notify vgui
+                // m_vguiContext->on_event(handle(), msg, wp, lp);
 
                 return 0;
         }
@@ -71,7 +66,7 @@ namespace vgui
             begin_paint(ps, hdc);
 
 
-            m_vguiContext->draw(hdc);
+            //m_vguiContext->draw(hdc);
 
             end_paint(ps);
             return 0;
@@ -80,7 +75,7 @@ namespace vgui
 
 
         // 3. Forward normal events to VGUI widgets
-        return m_vguiContext->on_event(handle(), msg, wp, lp);
+        return 0;//m_vguiContext->on_event(handle(), msg, wp, lp);
 
 
 
