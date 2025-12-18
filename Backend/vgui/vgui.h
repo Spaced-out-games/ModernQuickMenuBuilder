@@ -5,10 +5,9 @@
 
 namespace vgui
 {
-	using string_hash_t = entt::id_type;
 
 
-	string_hash_t hash(const std::string& string);
+
 
 
 

@@ -60,10 +60,10 @@
     <ClInclude Include="vgui\vgui_error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vgui\vgui_layer.h">
+    <ClInclude Include="qmb\AcceleratedLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vgui\vgui_node.h">
+    <ClInclude Include="vgui\vgui_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

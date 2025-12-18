@@ -53,53 +53,18 @@ int main()
 	app.run();
 	*/
 
-
-	Layer layer;
-	layer.insert("generic", std::move(std::make_unique<Widget>(0, 0, 20, 20)));
-	layer.insert("background", std::move(std::make_unique<VBackground>()));
-	layer.insert("button", std::move(std::make_unique<VButton>(Action_t::OPEN_FILE, "")));
-
-
-	std::cout << "generic hash: " << hash("generic") << "\n";
-	std::cout << "background hash: " << hash("background") << "\n";
-	std::cout << "\"\" hash: " << hash("") << "\n";
-	std::cout << "bad-widget hash: " << hash("bad-widget") << "\n";
-
-	std::cout << layer.size();
-	layer.getWidgetById("background")->w = 2000;
-	assert(layer.getWidgetById("generic")->w == 20);
-	auto* bg = dynamic_cast<VBackground*> (layer.getWidgetById("background"));
-
-
-	size_t size = layer.size();
-
-	// remove the background
-	layer.remove("background");
-
-	auto* bg_removed = dynamic_cast<VBackground*> (layer.getWidgetById("background"));
-	assert(bg_removed == nullptr && layer.logical_size() == 2 && layer.size() == size);
-	auto* button = layer.getWidgetById("button");
-
-	assert(dynamic_cast<VButton*>(button) != nullptr && button == layer.m_Widgets[2].m_Widget.get());
-
-
-	assert(layer.m_Widgets[1].m_Widget == nullptr);
-	assert(layer.pTail == 2 && layer.pHead == 0);
-
-	assert(layer.m_Widgets[layer.pHead].m_Next == layer.pTail);
-
-	layer.insert("background", std::move(std::make_unique<VBackground>()));
-
-	assert(layer.pTail == 1 && layer.pHead == 0);
 	
-	layer.remove("button");
-	layer.insert("new-thing", std::move(std::make_unique<Widget>(0, 0, 20, 20)));
+	Layer layer;
 
-	// try deleting things that don't exist
-	layer.remove("");
-	// try adding bad widgets
-	layer.insert("bad-widget", nullptr);
+	layer.insert("generic", std::make_unique<Widget>(0, 0, 20, 20));
+	layer.insert("background", std::make_unique<VBackground>());
+	layer.insert("button", std::make_unique<VButton>(Action_t::OPEN_FILE, ""));
 
-	assert(layer.getWidgetById("bad-widget") == nullptr);
+	for (Widget& widget : layer) {
+		std::cout << typeid(widget).name() << "\n";  // prints dynamic type if Widget has at least one virtual function
+	}
+	std::cout << '\n';
+
+	
 
 }

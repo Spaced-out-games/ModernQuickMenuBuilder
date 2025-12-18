@@ -26,8 +26,8 @@
     <ClInclude Include="vgui\vgui_button.h" />
     <ClInclude Include="vgui\vgui_context.h" />
     <ClInclude Include="vgui\vgui_error.h" />
+    <ClInclude Include="qmb\AcceleratedLinkedList.h" />
     <ClInclude Include="vgui\vgui_layer.h" />
-    <ClInclude Include="vgui\vgui_node.h" />
     <ClInclude Include="vgui\vgui_widget.h" />
     <ClInclude Include="vgui\vgui_window.h" />
     <ClInclude Include="native\Application.h" />
