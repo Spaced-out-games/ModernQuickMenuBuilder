@@ -15,28 +15,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="native\Application.h">
+    <ClInclude Include="platform\win32\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="native\Image.h">
+    <ClInclude Include="platform\win32\Image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="native\WidgetBase.h">
+    <ClInclude Include="platform\win32\WidgetBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="native\Button.h">
+    <ClInclude Include="platform\win32\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="native\Window.h">
+    <ClInclude Include="platform\win32\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="native\WidgetCallback.h">
+    <ClInclude Include="platform\win32\WidgetCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vgui\vgui_widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vgui\vgui_context.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vgui\vgui_window.h">
@@ -66,21 +63,39 @@
     <ClInclude Include="vgui\vgui_layer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vgui\vgui_event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_renderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_layerstack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\vgui_event_win32_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qmb\QMBApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="qmb\hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="native\Application.cpp">
+    <ClCompile Include="platform\win32\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="native\Image.cpp">
+    <ClCompile Include="platform\win32\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="native\WidgetBase.cpp">
+    <ClCompile Include="platform\win32\WidgetBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="native\Window.cpp">
+    <ClCompile Include="platform\win32\Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="native\WidgetCallback.cpp">
+    <ClCompile Include="platform\win32\WidgetCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgui\vgui_window.cpp">
@@ -98,9 +113,6 @@
     <ClCompile Include="vgui\vgui_action.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vgui\vgui_context.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vgui\vgui_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -108,6 +120,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgui\vgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_event_win32_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_layerstack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qmb\QMBApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qmb\hash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\vgui_event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

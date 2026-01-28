@@ -2,20 +2,13 @@
 
 namespace vgui
 {
-    void VButton::bindAction(Action_t type, std::string args)
-    {
-        m_Action = { type, args };
+
+    VButton::VButton() {
+        m_Action.m_Type = ActionType::EXIT;
+        m_Action.m_Args = "";
     }
 
-    VButton::VButton(Action_t type, const std::string& args)
-        : m_Action(type, args)
-    {
-    }
 
-    VButton::VButton(json bounds, json action)
-        : Widget(bounds), m_Action(action)
-    {
-    }
 
     LRESULT VButton::on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     {
@@ -31,11 +24,33 @@ namespace vgui
         {
             if (overlaps(x, y) && clicked)
             {
-                m_Action.run(m_Owner, this);
+                __debugbreak();
+                //m_Action.run(m_Owner, this);
             }
             clicked = false;
         }
 
         return 0;
+    }
+
+    bool VButton::on_event(const Event& evt) {
+
+        if (evt.type == EventType::LIFETIME_DTOR_EVENT) {
+            std::cout << "VButton got the dtor event";
+        }
+
+        if (evt.type == EventType::MOUSE_CLICK_EVENT && overlaps(evt.mouse_event.x, evt.mouse_event.y))
+        {
+            if (m_OnClick_pfn)
+            {
+                m_OnClick_pfn(evt.app, this, evt.mouse_event.x, evt.mouse_event.y);
+            }
+            else
+            {
+                throw std::runtime_error("m_OnClick_pfn was nullptr.");
+            }
+            return 1; // consumes the event
+        }
+        return false;
     }
 }

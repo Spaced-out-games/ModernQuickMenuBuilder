@@ -1,8 +1,9 @@
 #include "vgui_background.h"
 
-#include "../native/Image.h"
+#include "../platform/win32/Image.h"
 #include "../overrides/ui.h"
 #include "vgui.h"
+#include "vgui_window.h"
 
 namespace vgui
 {
@@ -25,7 +26,7 @@ namespace vgui
 
         InvalidateRect(hwnd, nullptr, TRUE);
     }
-
+    /*
     LRESULT VBackground::on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp)
     {
         if (msg == WM_SIZE)
@@ -41,5 +42,33 @@ namespace vgui
         }
 
         return 0;
+    }*/
+
+    bool VBackground::on_event(const Event& evt) {
+
+        if (evt.type == EventType::LIFETIME_DTOR_EVENT) {
+            std::cout << "VBackground got the dtor event";
+        }
+
+        if (evt.type == EventType::WINDOW_RESIZE_EVENT)
+        {
+            w = evt.window_resize_event.w;
+            h = evt.window_resize_event.h;
+            RECT rect = { 0, 0, w, h };
+            InvalidateRect(nullptr, &rect, true);
+        }
+        return 0;
+        
     }
+    VBackground::VBackground(native::WidgetBase& widget) {
+        x = widget.bounds().left;
+        y = widget.bounds().top;
+        w = widget.bounds().right - x;
+        h = widget.bounds().bottom - y;
+
+
+    }
+
+
+
 }

@@ -1,11 +1,9 @@
 #pragma once
+// TODO: handle collisions!!!!
 
 namespace qmb {
 
-    string_hash_t hash(const std::string& string)
-    {
-        return entt::hashed_string{ string.c_str() }.value();
-    }
+
 
 
     // --------------------------------------------------
@@ -154,6 +152,13 @@ namespace qmb {
             remove(it->second);
     }
 
+    template <class T>
+    void AcceleratedLinkedList<T>::clear()
+    {
+        while (head != NULL_INDEX)
+            remove(head);
+    }
+
 
     // --------------------------------------------------
     // Iterator
@@ -165,7 +170,7 @@ namespace qmb {
         using value_type = T;
         using pointer = T*;
         using reference = T&;
-        using iterator_category = std::forward_iterator_tag;
+        using iterator_category = std::bidirectional_iterator_tag;
 
     private:
         AcceleratedLinkedList<T>* list = nullptr;
@@ -208,7 +213,10 @@ namespace qmb {
             return tmp;
         }
 
-        bool operator==(const iterator& rhs) const { return current == rhs.current; }
+        bool operator==(const iterator& rhs) const {
+            return list == rhs.list && current == rhs.current;
+        }
+
         bool operator!=(const iterator& rhs) const { return current != rhs.current; }
     };
 

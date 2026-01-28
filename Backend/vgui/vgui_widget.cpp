@@ -60,6 +60,26 @@ namespace vgui
         return 0;
     }
 
+    bool Widget::on_event(const Event& evt)
+    {
+        if (!evt.app) {
+            std::cout << "Invalid Application*!";
+            throw std::runtime_error("Invalid Application*!");
+        }
+
+        if (!evt.app->m_Window) {
+            std::cout << "Invalid Window*!";
+            throw std::runtime_error("Invalid Window*!");
+        }
+
+        if (evt.type == EventType::WINDOW_RESIZE_EVENT)
+        {
+            InvalidateRect(evt.app->m_Window->handle(), nullptr, TRUE);
+            return 0;
+        }
+        return 0;
+    }
+
     bool Widget::overlaps(int px, int py) const
     {
         return px >= x && px <= x + w &&

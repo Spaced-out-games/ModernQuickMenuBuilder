@@ -1,17 +1,13 @@
 #pragma once
-#include "thirdparty/entt/src/entt/core/hashed_string.hpp"
 #include <unordered_map>
 #include <vector>
 #include <memory>
 #include <string>
+#include "hash.h"
 
 namespace qmb {
 
-    using string_hash_t = entt::id_type;
-    using index_t = uint32_t;
-    static constexpr index_t NULL_INDEX = UINT32_MAX;
 
-    string_hash_t hash(const std::string& string);
 
     template <class T>
     struct AcceleratedLinkedList
@@ -45,6 +41,7 @@ namespace qmb {
         void insert(const std::string& name, std::unique_ptr<T>&& obj);
         void remove(index_t idx);
         void remove(const std::string& name);
+        void clear();
 
         T* operator[](const std::string& name);
 

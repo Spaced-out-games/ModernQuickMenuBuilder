@@ -1,16 +1,15 @@
 #pragma once
-
-#include <Windows.h>
-#include <memory>
-#include <string>
-#include <unordered_map>
+#include "vgui_event.h"
+#include <queue>
 
 namespace vgui
 {
 
-
-
-    struct Context
-    {
-    };
+	// Manages population and flushing of event queues.
+	struct EventContext
+	{
+		std::queue<Event> m_Events;
+		// Might want to make this agnostic by making it a wrapped function pointer instead...
+		void (*pollEvents)(EventContext* self) = nullptr;
+	};
 }

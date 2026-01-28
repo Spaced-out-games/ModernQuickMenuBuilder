@@ -1,55 +1,116 @@
 #include "vgui_window.h"
-#include "../vgui/vgui_context.h"
+#include "vgui_event_win32_impl.h"
 
 
 namespace vgui
 {
 	void VWindow::begin_paint(PAINTSTRUCT& ps, HDC& hdc)
 	{
-		begin_paint_impl(m_Handle, ps, hdc);
+        hdc = BeginPaint(handle(), &ps);
 	}
 	void VWindow::end_paint(PAINTSTRUCT& ps)
 	{
-		end_paint_impl(m_Handle, ps);
+        EndPaint(handle(), &ps);
 
 	}
 
-	VWindow::VWindow(Context* vgui_context) : m_vguiContext(vgui_context)
+	VWindow::VWindow(native::Application* app)
 	{
-        on_mouse_down_L([](WidgetBase* widget, WPARAM wp, LPARAM lp) -> LRESULT {
-            // do a dynamic cast to see if the widget is a button type
 
-            // if it's not a button type, early exit with 0
-
-            // if it is a button type, call on_press()
-
-            int x = LOWORD(lp);
-            int y = HIWORD(lp);
-
-            std::cout << x << ", " << y << '\n';
-
-            return DefWindowProc(widget->handle(), WM_LBUTTONDOWN, wp, lp);
-        });
+        m_Owner = app;
+        app->m_Window = this;
 
 	}
     LRESULT VWindow::on_event(UINT msg, WPARAM wp, LPARAM lp)
     {
-        if (!m_vguiContext)
-            return DefWindowProc(m_Handle, msg, wp, lp);
+        // we interrupt active resize events and prevent their propagation
+        if (msg == WM_SIZING) {
+            if (!m_MaintainAspectRatio) return 0;
+            RECT* r = (RECT*)lp;
+            int w = r->right - r->left;
+            int h = r->bottom - r->top;
+            int new_w;
+            int new_h;
+            switch (wp) {
+                case WMSZ_LEFT:
+                    new_h = (int)(w / m_Aspect_ratio);
+                    r->top = r->bottom - new_h;
+                    break;
+                case WMSZ_RIGHT:
+                    new_h = (int)(w / m_Aspect_ratio);
+                    r->bottom = r->top + new_h;
+                    break;
+                case WMSZ_TOP:
+                    new_w = (int)(h * m_Aspect_ratio);
+                    r->left = r->right - new_w;
+                    break;
+                case WMSZ_BOTTOM:
+                    new_w = (int)(h * m_Aspect_ratio);
+                    r->right = r->left + new_w;
+                    break;
+                default:
+                    // get new width and height so that they respect the aspect ratio
+                    // in terms of the current height
+                    // compare these versus the old dimensions. Whichever axis
+                    // isn't dominant gets updated
+                    break;
+
+            }
+            return 0;
+        }
+
+
+        
+
+
+
+        // we take the event, convert it, and add it to the queue
+        vgui::Event evt;
+        vgui::vgui_event_win32_impl(m_Owner, evt, msg, wp, lp);
+        if (evt.type == EventType::LIFETIME_NULL_EVENT) return 0;
+        
+        
+        m_LayerStack.on_event(evt);
+        return 0;
+    }
+
+    /*
+    void VWindow::init(HINSTANCE application, LPWSTR title, int x, int y, int w, int h)
+    {
+        init_impl(
+            registered,
+            0,                 // styleExtended
+            (LPWSTR)L"QMB_Window",      // class_name
+            title,             // window title
+            WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+            x, y, w, h,
+            nullptr,           // no parent
+            nullptr,           // no menu
+            application,
+            IDC_ARROW,         // default cursor
+            (HBRUSH)(0) // default background
+        );
+    }*/
+
+    bool VWindow::on_event(const Event& evt)
+    {
+
+        if (m_LayerStack.size() == 0) return 0;
+
+        //if (!m_vguiContext)
+        //    return 0;
 
 
         // 1. Native events that MUST go to Windows
-        switch (msg) {
-            case WM_ERASEBKGND:
+        switch (evt.type) {
+            case EventType::WINDOW_ERASE_BG_EVENT:
                 return 1;
-            case WM_NCHITTEST:
-            case WM_ENTERSIZEMOVE:
-            case WM_EXITSIZEMOVE:
-            case WM_SIZING:
-            case WM_WINDOWPOSCHANGING:
-            case WM_SIZE:
-                // Notify vgui
-                // m_vguiContext->on_event(handle(), msg, wp, lp);
+            //case WM_NCHITTEST:
+            case EventType::WINDOW_BEGIN_MOVE_RESIZE_EVENT:
+            case EventType::WINDOW_END_MOVE_RESIZE_EVENT:
+            case EventType::WINDOW_RESIZING_EVENT:
+            case EventType::WINDOW_STATE_CHANGING_EVENT:
+            case EventType::WINDOW_RESIZE_EVENT:
 
                 return 0;
         }
@@ -58,24 +119,25 @@ namespace vgui
 
 
         // 2. Painting
-        if (msg == WM_PAINT)
+        if (evt.type == EventType::WINDOW_PAINT_EVENT)
         {
 
             PAINTSTRUCT ps;
             HDC hdc;
             begin_paint(ps, hdc);
 
+            // a little hack, for now
+            m_LayerStack.draw(evt);
 
             //m_vguiContext->draw(hdc);
 
             end_paint(ps);
-            return 0;
         }
         
 
 
         // 3. Forward normal events to VGUI widgets
-        return 0;//m_vguiContext->on_event(handle(), msg, wp, lp);
+        return 0;
 
 
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <cassert>
-#include "../native/WidgetBase.h"
-#include "../native/Image.h"
+#include "../platform/win32/WidgetBase.h"
+#include "../platform/win32/Image.h"
 
 
 using namespace native;

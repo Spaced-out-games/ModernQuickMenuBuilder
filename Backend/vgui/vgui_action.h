@@ -3,12 +3,18 @@
 #include <string>
 #include "thirdparty/json/json.hpp"
 
+using json = nlohmann::json;
+
+namespace native
+{
+    struct Application;
+}
+
 namespace vgui
 {
-    struct Context;
-    struct Widget;
 
-    enum class Action_t
+
+    enum class ActionType
     {
         NONE,
         EXIT,
@@ -17,22 +23,24 @@ namespace vgui
         OPEN_FILE
     };
 
-    Action_t from_string(const std::string& name);
 
     struct Action
     {
-        Action_t type = Action_t::NONE;
-        std::string args;
+        ActionType m_Type = ActionType::NONE;
+        json m_Args;
 
-        Action() = default;
+        void run(native::Application* app);
 
-        // debug-only helpers
-        Action(const std::string& action_type, const std::string& action_args);
-        Action(Action_t type, const std::string& args);
-
-        // JSON-driven constructor
-        explicit Action(nlohmann::json action);
-
-        void run(Context* ctx, Widget* widget);
     };
+
+    // for each ActionType, forward declare a free function, define them in vgui_action.cpp,
+    // and pass arguments to them in Action::run().
+
+    namespace action
+    {
+        // gives a dtor event to each widget in the window, frees the layerstack, and exits the application 
+        void exit(native::Application*, const std::string&);
+    }
+
+
 }

@@ -1,15 +1,15 @@
 #pragma once
 
 #include <Windows.h>
-#include "../native/Image.h"
+#include "../platform/win32/Image.h"
 #include "vgui_widget.h"
-
+namespace native { class WidgetBase; }
 namespace qmb { class Image; }
-
 namespace vgui
 {
     struct VBackground : vgui::Widget
     {
+        // image to draw
         qmb::Image img;
 
         // rendering
@@ -19,6 +19,9 @@ namespace vgui
         void stretch_to_fit(HWND hwnd);
 
         // events
-        LRESULT on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) override;
+        bool on_event(const Event& evt) override;
+
+        VBackground(native::WidgetBase& window);
+
     };
 }

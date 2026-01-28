@@ -68,7 +68,7 @@ int main()
 
 	std::unique_ptr<vgui::VButton> button = std::make_unique<vgui::VButton>();
 
-	button->bindAction(Action_t::EXIT, "Exitting...");
+	button->bindAction(ActionType::EXIT, "Exitting...");
 
 
 	// ------------------------------------------------------------------ //

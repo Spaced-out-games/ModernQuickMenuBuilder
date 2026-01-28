@@ -4,26 +4,31 @@
 #include "vgui_action.h"
 #include <thirdparty/json/json.hpp>
 using json = nlohmann::json;
-
+namespace native
+{
+    struct Application;
+}
 
 namespace vgui
 {
     struct VButton : vgui::Widget
     {
-        using interact_pfn_t = void(*)(VButton*, int x, int y);
-
         Action      m_Action;
         bool        clicked = false;
+        
+        // By default, just do the action
+        void (*m_OnClick_pfn)(native::Application*, VButton*, int, int) = [](native::Application* app, VButton* btn, int x, int y) {
+
+            btn->m_Action.run(app);
+        };
 
         // action binding
-        void bindAction(Action_t type, std::string args);
-
-        // constructors
-        VButton() = default;
-        VButton(Action_t type, const std::string& args);
-        VButton(json bounds, json action);
+        VButton();
 
         // events
         LRESULT on_event(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) override;
+
+        bool on_event(const Event& evt) override;
+
     };
 }
