@@ -8,10 +8,18 @@
 namespace qmb {
 
 
-
+    /// <summary>
+    /// Accelerated linked list data structure. Conceptually, it's a linked list with a human-readable
+    /// interface to access and mutate Ts with ease. There is no need to manage memory by the end user,
+    /// reshuffle items when resizing, or update hash map keys.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     template <class T>
     struct AcceleratedLinkedList
     {
+        /// <summary>
+        /// Linked list node
+        /// </summary>
         struct Node
         {
             std::unique_ptr<T> value;
@@ -22,27 +30,48 @@ namespace qmb {
             T* get() noexcept;
         };
 
+        /// The pool of nodes
         std::vector<Node> m_Nodes;
+
+        // Lookup table
         std::unordered_map<string_hash_t, index_t> m_LUT;
 
+        // Head of the linked list
         index_t head = NULL_INDEX;
+
+        // Tail of the linked list
         index_t tail = NULL_INDEX;
+
+        // Number of nodes actively in use
         size_t logical_size = 0;
 
-        // sizes
+        // Number of alive and dead nodes in the linked list
         size_t size() const;
+        // Number of alive nodes in the linked list
         size_t live_size() const;
 
-        // internals
+        // Gets the number of slots allocated before a resize is needed
+        size_t capacity() const;
+
+        // Finds where in the linked list to insert another node.
         index_t findInsertionIndex() const;
 
-        // API
+        // Gets a node by name
         T* get(const std::string& name);
+
+        // Inserts a node by name
         void insert(const std::string& name, std::unique_ptr<T>&& obj);
+
+        // Removes a node by index
         void remove(index_t idx);
+
+        // Removes a node by name
         void remove(const std::string& name);
+
+        // Clears the linked list
         void clear();
 
+        // Array access operator, by name
         T* operator[](const std::string& name);
 
         // -------------------

@@ -34,6 +34,13 @@ namespace qmb {
         return logical_size;
     }
 
+    template <class T>
+    size_t AcceleratedLinkedList<T>::capacity() const
+    {
+        return m_Nodes.capacity();
+    }
+
+
     // --------------------------------------------------
     // Internals
     // --------------------------------------------------
