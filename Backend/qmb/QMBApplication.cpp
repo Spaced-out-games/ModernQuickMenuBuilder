@@ -14,6 +14,7 @@ namespace qmb {
 		// notify the layers to the destructor being called
 		fire(evt);
 		status = 1;
+		std::cout << msg;
 	}
 
 	void QMBApplication::link_window(vgui::VWindow& window)
