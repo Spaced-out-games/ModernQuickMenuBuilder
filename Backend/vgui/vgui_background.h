@@ -9,19 +9,29 @@ namespace vgui
 {
     struct VBackground : vgui::Widget
     {
-        // image to draw
+        /// <summary>
+        /// The image we need to draw
+        /// </summary>
         qmb::Image img;
 
-        // rendering
+        /// <summary>
+        /// Draws this widget
+        /// </summary>
+        /// <param name="hdc">Hardware device to draw with</param>
         void draw(HDC hdc) override;
 
-        // sizing
-        void stretch_to_fit(HWND hwnd);
-
-        // events
+        /// <summary>
+        /// Responds to and handles a vgui Event
+        /// </summary>
+        /// <param name="evt">An event to handle</param>
+        /// <returns>Whether or not this widget should block propagate to sister widgets</returns>
         bool on_event(const Event& evt) override;
 
-        VBackground(native::WidgetBase& window);
+        /// <summary>
+        /// Constructs a vgui Background widget
+        /// </summary>
+        /// <param name="owner">The native widget that is to own this Background</param>
+        VBackground(native::WidgetBase& owner);
 
     };
 }
