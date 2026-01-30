@@ -4,9 +4,9 @@
 
 namespace vgui
 {
+	// Represents a set of widget layers
 	struct LayerStack: qmb::AcceleratedLinkedList<Layer>
 	{
-
 		void draw(const Event& evt);
 		bool on_event(const Event& evt);
 	};
