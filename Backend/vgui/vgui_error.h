@@ -4,7 +4,8 @@
 namespace vgui
 {
 
-	enum class Error: int
+	// Defines the error code for JSON/file parsing errors
+	enum class JSONError: int
 	{
 		SUCCESS_GENERIC,
 		FAILURE_GENERIC,
@@ -16,7 +17,7 @@ namespace vgui
 		INVALID_ACTION_FORMAT_ERROR
 
 	};
-	void exit(const std::string& error, Error code);
+	void exit(const std::string& error, JSONError code);
 	void warn(const std::string& warning);
 
 

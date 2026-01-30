@@ -5,7 +5,7 @@
 
 namespace vgui
 {
-	void exit(const std::string& error, Error code)
+	void exit(const std::string& error, JSONError code)
 	{
 		std::cerr << "[ERROR]: " << error;
 		::exit(static_cast<int>(code));
