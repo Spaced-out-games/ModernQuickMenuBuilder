@@ -4,7 +4,7 @@
 
 namespace vgui
 {
-
+    // Platform-agnostic event
     struct Event;
 
     // defined in vgui_event_*_impl.cpp
@@ -178,7 +178,7 @@ namespace vgui
         uint32_t timestamp = 0;
         union
         {
-            // for testing
+            // for testing purposes. Leave it here for now
             struct { HWND hwnd; UINT msg; WPARAM wp; LPARAM lp; } win32_event;
 
             struct { float deltaTime; } tick_event;
@@ -225,6 +225,5 @@ namespace vgui
     
 
 
-    void makeTickEvent(Event& evt);
 
 } // namespace vgui
