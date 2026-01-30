@@ -13,7 +13,7 @@ namespace native
 namespace vgui
 {
 
-
+    // The type of vgui action we are dealing with
     enum class ActionType
     {
         NONE,
@@ -26,21 +26,19 @@ namespace vgui
 
     struct Action
     {
+        // Which type of vgui action this represents
         ActionType m_Type = ActionType::NONE;
+
+        // Arguments for this action
         json m_Args;
 
+        /// <summary>
+        /// Runs the vgui Action
+        /// </summary>
         void run(native::Application* app);
 
     };
 
-    // for each ActionType, forward declare a free function, define them in vgui_action.cpp,
-    // and pass arguments to them in Action::run().
-
-    namespace action
-    {
-        // gives a dtor event to each widget in the window, frees the layerstack, and exits the application 
-        void exit(native::Application*, const std::string&);
-    }
 
 
 }

@@ -5,17 +5,15 @@ namespace vgui
 	void Action::run(native::Application* app) {
 		if (m_Type == ActionType::EXIT)
 		{
-			action::exit(app, "");
+			#ifdef _DEBUG
+				if (app) app->exit("Closing application via action...");
+			#else
+				if (app) app->exit(""); // Make sure to swap for json["message"]
+			#endif
 		}
 	}
 
-	namespace action
-	{
-		void exit(native::Application* app, const std::string& msg) {
-			// garbage collection
-			app->exit(msg);
-		}
-	}
+
 }
 
 // vwindow
