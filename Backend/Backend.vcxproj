@@ -21,10 +21,8 @@
   <ItemGroup>
     <ClInclude Include="qmb\hash.h" />
     <ClInclude Include="qmb\QMBApplication.h" />
-    <ClInclude Include="vgui\vgui_context.h" />
-    <ClInclude Include="vgui\vgui_event_win32_impl.h" />
-    <ClInclude Include="overrides\ui.h" />
     <ClInclude Include="vgui\vgui.h" />
+    <ClInclude Include="vgui\vgui_event_win32_impl.h" />
     <ClInclude Include="vgui\vgui_action.h" />
     <ClInclude Include="vgui\vgui_background.h" />
     <ClInclude Include="vgui\vgui_button.h" />
@@ -37,14 +35,12 @@
     <ClInclude Include="vgui\vgui_widget.h" />
     <ClInclude Include="vgui\vgui_window.h" />
     <ClInclude Include="platform\win32\Application.h" />
-    <ClInclude Include="platform\win32\Button.h" />
     <ClInclude Include="platform\win32\Image.h" />
     <ClInclude Include="platform\win32\WidgetBase.h" />
     <ClInclude Include="platform\win32\WidgetCallback.h" />
     <ClInclude Include="platform\win32\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="overrides\ui.cpp" />
     <ClCompile Include="platform\win32\Application.cpp" />
     <ClCompile Include="platform\win32\Image.cpp" />
     <ClCompile Include="platform\win32\WidgetBase.cpp" />
@@ -52,7 +48,6 @@
     <ClCompile Include="platform\win32\Window.cpp" />
     <ClCompile Include="qmb\hash.cpp" />
     <ClCompile Include="qmb\QMBApplication.cpp" />
-    <ClCompile Include="vgui\vgui.cpp" />
     <ClCompile Include="vgui\vgui_action.cpp" />
     <ClCompile Include="vgui\vgui_background.cpp" />
     <ClCompile Include="vgui\vgui_button.cpp" />

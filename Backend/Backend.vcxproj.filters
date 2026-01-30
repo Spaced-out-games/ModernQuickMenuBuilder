@@ -24,9 +24,6 @@
     <ClInclude Include="platform\win32\WidgetBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="platform\win32\Button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="platform\win32\Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -45,13 +42,7 @@
     <ClInclude Include="vgui\vgui_background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vgui\vgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="vgui\vgui_action.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="overrides\ui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vgui\vgui_error.h">
@@ -81,6 +72,9 @@
     <ClInclude Include="qmb\hash.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vgui\vgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="platform\win32\Application.cpp">
@@ -101,9 +95,6 @@
     <ClCompile Include="vgui\vgui_window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="overrides\ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="vgui\vgui_error.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,9 +108,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgui\vgui_background.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vgui\vgui.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgui\vgui_event_win32_impl.cpp">
