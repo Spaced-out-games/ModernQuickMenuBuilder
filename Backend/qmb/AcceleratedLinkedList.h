@@ -8,13 +8,18 @@
 namespace qmb {
 
 
+    template <class T>
+    using order_pfn_t = bool(*)(const T&, const T&);
+
+
+
     /// <summary>
     /// Accelerated linked list data structure. Conceptually, it's a linked list with a human-readable
     /// interface to access and mutate Ts with ease. There is no need to manage memory by the end user,
     /// reshuffle items when resizing, or update hash map keys.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    template <class T, class K = std::string>
+    template <class T, class K = std::string, order_pfn_t<T> order_fn = nullptr>
     struct AcceleratedLinkedList
     {
         /// <summary>
