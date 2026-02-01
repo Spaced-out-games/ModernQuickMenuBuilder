@@ -14,28 +14,7 @@ namespace vgui
     Widget::Widget(int x_, int y_, int w_, int h_)
         : x(x_), y(y_), w(w_), h(h_) {}
 
-    Widget::Widget(json bounds)
-    {
-        using enum vgui::Error;
-
-        if (!bounds.is_array())
-        {
-            vgui::exit(std::format("Bounds are not an array!"), JSON_PARSE_ERROR);
-        }
-
-        if (bounds.size() != 4)
-        {
-            vgui::exit(
-                std::format("Bounds must contain exactly 4 elements (x, y, w, h)!"),
-                JSON_PARSE_ERROR
-            );
-        }
-
-        x = bounds[0].get<int>();
-        y = bounds[1].get<int>();
-        w = bounds[2].get<int>();
-        h = bounds[3].get<int>();
-    }
+    
 
     void Widget::draw(HDC hdc)
     {

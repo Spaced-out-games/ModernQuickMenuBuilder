@@ -17,7 +17,6 @@ namespace vgui
         int h = 20;
         Widget();
         Widget(int x, int y, int w, int h);
-        explicit Widget(nlohmann::json bounds);
 
         virtual void draw(HDC hdc);
         virtual LRESULT on_event(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
