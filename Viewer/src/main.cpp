@@ -4,6 +4,7 @@
 #include "Backend/qmb/QMBApplication.h"
 #include "Backend/vgui/vgui_background.h"
 #include "Backend/vgui/vgui_button.h"
+#include <cassert>
 
 #include <format>
 #include <memory>
@@ -12,6 +13,22 @@ using namespace vgui;
 
 
 
+int main()
+{
+	qmb::AcceleratedLinkedList<int, int> list;
+	list.insert(43, std::move(std::make_unique<int>(65)));
+
+	assert(*(list.get(43)) == 65);
+
+	std::cout << *(list.get(43));
+
+	
+
+
+}
+
+
+/* live version, restore later
 int main()
 {
 
@@ -71,3 +88,4 @@ int main()
 	}
 
 }
+*/
