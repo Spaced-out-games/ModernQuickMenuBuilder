@@ -55,6 +55,17 @@ namespace qmb {
         return (next == NULL_INDEX) ? size() : next;
     }
 
+
+    template <class T, class K, order_pfn_t<T> order_fn>
+    splice_t AcceleratedLinkedList<T, K, order_fn>::findInsertionNeighbors() const
+    {
+        splice_t temp;
+        return temp;
+    }
+
+
+
+
     // --------------------------------------------------
     // Lookup
     // --------------------------------------------------

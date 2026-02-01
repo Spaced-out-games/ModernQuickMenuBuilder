@@ -1,15 +1,29 @@
 #pragma once
 #include <unordered_map>
+#include <stdint.h>
 #include <vector>
 #include <memory>
 #include <string>
-#include "hash.h"
+#include <limits>
+// NOTICE: FIxes the fact that the compiler is expanding numeric_limits::max() to minwindef's max() macro instead of
+// the constexpr. DO NOT REMOVE!
+#undef max
+
+
 
 namespace qmb {
 
+    using index_t = uint32_t;
 
+
+    constexpr index_t NULL_INDEX = std::numeric_limits<index_t>::max();
+    using splice_t = std::pair<index_t, index_t>;
     template <class T>
     using order_pfn_t = bool(*)(const T&, const T&);
+
+
+
+
 
 
 
@@ -22,6 +36,8 @@ namespace qmb {
     template <class T, class K = std::string, order_pfn_t<T> order_fn = nullptr>
     struct AcceleratedLinkedList
     {
+
+
         /// <summary>
         /// Linked list node
         /// </summary>
@@ -57,25 +73,28 @@ namespace qmb {
         // Gets the number of slots allocated before a resize is needed
         size_t capacity() const;
 
-        // Finds where in the linked list to insert another node.
+        // Finds where in the vector to insert another node.
         index_t findInsertionIndex() const;
 
-        // Gets a node by name
+        // Finds where in the linked list to insert between.
+        splice_t findInsertionNeighbors() const;
+
+        // Gets a node by ID
         T* get(const K& id);
 
-        // Inserts a node by name
+        // Inserts a node by ID
         void insert(const K& id, std::unique_ptr<T>&& obj);
 
         // Removes a node by index
         void remove(index_t idx);
 
-        // Removes a node by name
+        // Removes a node by ID
         void remove(const K& id);
 
         // Clears the linked list
         void clear();
 
-        // Array access operator, by name
+        // Array access operator, by ID
         T* operator[](const K& id);
 
         // -------------------
