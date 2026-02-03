@@ -59,6 +59,26 @@ namespace qmb {
     template <class T, class K, order_pfn_t<T> order_fn>
     splice_t AcceleratedLinkedList<T, K, order_fn>::findInsertionNeighbors() const
     {
+        // Sentinels / edge cases: 
+        // {nil, nil} -> insert first node; head = 0; tail = 0
+        // 
+        // {tail, nil} -> insert after tail; update tail
+        // {nil, tail} -> insert before tail; update tail.prev and tail.prev.next
+        // 
+        // {nil, head} -> insert before head; update head + head.next.prev
+        // {head, ?} insert after head; update prev and next pointers, respectively
+
+
+        // just insert after the tail and update the tail to point to the new node
+        if constexpr (order_fn == nullptr) {
+
+            // if tail == null, we are inserting the first node
+            if (tail == NULL_INDEX) return { NULL_INDEX, NULL_INDEX };
+
+            return { tail, m_Nodes };
+        }
+
+
         splice_t temp;
         return temp;
     }
@@ -119,6 +139,7 @@ namespace qmb {
     // Remove
     // --------------------------------------------------
 
+    // old version:
     template <class T, class K, order_pfn_t<T> order_fn>
     void AcceleratedLinkedList<T, K, order_fn>::remove(index_t idx)
     {
@@ -158,9 +179,43 @@ namespace qmb {
     template <class T, class K, order_pfn_t<T> order_fn>
     void AcceleratedLinkedList<T, K, order_fn>::remove(const K& id)
     {
+        // Early exit if empty
+        if (head == NULL_INDEX || tail == NULL_INDEX) return;
+
+        // from here on, we assume:
+        assert(head != NULL_INDEX && tail != NULL_INDEX);
+
         auto it = m_LUT.find(id);
-        if (it != m_LUT.end())
-            remove(it->second);
+        // don't delete what isn't there
+        if (it == m_LUT.end()) return;
+        
+        // from here on we assume:
+        assert(m_LUT.contains(id));
+
+        index_t target_idx = it->second;
+
+        // from here on we assume, by the rules of insertion:
+        assert(target_idx != NULL_INDEX);
+        // and also
+        assert(target_idx >= 0 && target_idx < size());
+
+        // therefore this should always be legal
+        auto& target = m_Nodes[target_idx];
+
+
+        // we always need to destroy the T, so just do that before we enter complicated logic
+        m_Nodes[target_idx].value.reset();
+
+        index_t prev = target.prev;
+        index_t next = target.next;
+
+        if(prev !=NULL_INDEX)
+
+
+
+
+
+        
     }
 
     template <class T, class K, order_pfn_t<T> order_fn>
