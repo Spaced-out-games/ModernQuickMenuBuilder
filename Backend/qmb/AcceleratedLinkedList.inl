@@ -1,5 +1,4 @@
 #pragma once
-// TODO: handle collisions!!!!
 
 namespace qmb {
 
@@ -209,7 +208,7 @@ namespace qmb {
         index_t prev = target.prev;
         index_t next = target.next;
 
-        if(prev !=NULL_INDEX)
+        //if(prev !=NULL_INDEX)
 
 
 

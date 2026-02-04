@@ -5,6 +5,7 @@
 #include <memory>
 #include <string>
 #include <limits>
+#include <cassert>
 // NOTICE: FIxes the fact that the compiler is expanding numeric_limits::max() to minwindef's max() macro instead of
 // the constexpr. DO NOT REMOVE!
 #undef max
