@@ -1,16 +1,8 @@
-#include "Backend/vgui/vgui_event_win32_impl.h"
-#include "Backend/vgui/vgui_window.h"
-#include "Backend/vgui/vgui_event.h"
-#include "Backend/qmb/QMBApplication.h"
-#include "Backend/vgui/vgui_background.h"
-#include "Backend/vgui/vgui_button.h"
+
+/* Test driver code for AcceleratedLinkedList  */
+#include "Backend/qmb/AcceleratedLinkedList.h"
 #include <cassert>
-
-#include <format>
-#include <memory>
-using namespace native;
-using namespace vgui;
-
+#include <iostream>
 
 
 int main()
@@ -22,13 +14,31 @@ int main()
 
 	std::cout << *(list.get(43));
 
-	
+
 
 
 }
+/* ------------------------------------ */
 
 
-/* live version, restore later
+
+
+
+
+
+/* App code
+#include "Backend/vgui/vgui_event_win32_impl.h"
+#include "Backend/vgui/vgui_window.h"
+#include "Backend/vgui/vgui_event.h"
+#include "Backend/qmb/QMBApplication.h"
+#include "Backend/vgui/vgui_background.h"
+#include "Backend/vgui/vgui_button.h"
+
+#include <format>
+#include <memory>
+using namespace native;
+using namespace vgui;
+
 int main()
 {
 
@@ -88,4 +98,4 @@ int main()
 	}
 
 }
-*/
+*/  
