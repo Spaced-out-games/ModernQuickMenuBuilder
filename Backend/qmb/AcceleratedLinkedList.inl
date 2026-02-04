@@ -9,11 +9,13 @@ namespace qmb {
     // Node
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    T* AcceleratedLinkedList<T, K, order_fn>::Node::get() noexcept
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T* AcceleratedLinkedList<K, T, order_fn>::Node::get() noexcept
     {
         return value.get();
     }
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T& AcceleratedLinkedList<K, T, order_fn>::Node::operator*() noexcept { return *value; }
 
 
 
@@ -21,20 +23,20 @@ namespace qmb {
     // Sizes
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    size_t AcceleratedLinkedList<T, K, order_fn>::size() const
+    template <class K, class T, order_pfn_t<T> order_fn>
+    size_t AcceleratedLinkedList<K, T, order_fn>::size() const
     {
         return m_Nodes.size();
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    size_t AcceleratedLinkedList<T, K, order_fn>::live_size() const
+    template <class K, class T, order_pfn_t<T> order_fn>
+    size_t AcceleratedLinkedList<K, T, order_fn>::live_size() const
     {
-        return logical_size;
+        return m_AliveCount;
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    size_t AcceleratedLinkedList<T, K, order_fn>::capacity() const
+    template <class K, class T, order_pfn_t<T> order_fn>
+    size_t AcceleratedLinkedList<K, T, order_fn>::capacity() const
     {
         return m_Nodes.capacity();
     }
@@ -44,53 +46,50 @@ namespace qmb {
     // Internals
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    index_t AcceleratedLinkedList<T, K, order_fn>::findInsertionIndex() const
+    template <class K, class T, order_pfn_t<T> order_fn>
+    index_t AcceleratedLinkedList<K, T, order_fn>::findInsertionIndex()
     {
-        if (tail == NULL_INDEX)
-            return 0;
-
-        index_t next = m_Nodes[tail].next;
-        return (next == NULL_INDEX) ? size() : next;
+        if (m_Tail == NULL_LINK || m_Nodes[m_Tail].next == NULL_LINK) {
+            m_Nodes.emplace_back();
+            return m_Nodes.size() - 1;
+        }
+        return m_Nodes[m_Tail].next;
     }
 
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    splice_t AcceleratedLinkedList<T, K, order_fn>::findInsertionNeighbors() const
+    template <class K, class T, order_pfn_t<T> order_fn>
+    index_t AcceleratedLinkedList<K, T, order_fn>::findInsertionNeighbors(const T& item) const
     {
-        // Sentinels / edge cases: 
-        // {nil, nil} -> insert first node; head = 0; tail = 0
-        // 
-        // {tail, nil} -> insert after tail; update tail
-        // {nil, tail} -> insert before tail; update tail.prev and tail.prev.next
-        // 
-        // {nil, head} -> insert before head; update head + head.next.prev
-        // {head, ?} insert after head; update prev and next pointers, respectively
+        // No ordering? just append after tail
+        if constexpr (order_fn == nullptr) return m_Tail;
 
+        index_t prev_candidate = NULL_LINK; // node after which we insert
+        index_t current = m_Head;
 
-        // just insert after the tail and update the tail to point to the new node
-        if constexpr (order_fn == nullptr) {
+        // Walk forward from head until we find the first node
+        // where 'item' should be inserted **before** the current node
+        while (current != NULL_LINK)
+        {
+            // if item should come before 'current', stop
+            if (order_fn(item, *m_Nodes[current].value)) break;
 
-            // if tail == null, we are inserting the first node
-            if (tail == NULL_INDEX) return { NULL_INDEX, NULL_INDEX };
-
-            return { tail, m_Nodes };
+            // otherwise, move forward
+            prev_candidate = current;
+            current = m_Nodes[current].next;
         }
 
-
-        splice_t temp;
-        return temp;
+        // prev_candidate == NULL_LINK -> insert at head
+        // otherwise, insert after prev_candidate
+        return prev_candidate;
     }
-
-
 
 
     // --------------------------------------------------
     // Lookup
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    T* AcceleratedLinkedList<T, K, order_fn>::get(const K& id)
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T* AcceleratedLinkedList<K, T, order_fn>::get(const K& id)
     {
         auto it = m_LUT.find(id);
         if (it == m_LUT.end())
@@ -99,8 +98,8 @@ namespace qmb {
         return m_Nodes[it->second].get();
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    T* AcceleratedLinkedList<T, K, order_fn>::operator[](const K& id) {
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T* AcceleratedLinkedList<K, T, order_fn>::operator[](const K& id) {
         return get(id);
     }
 
@@ -110,204 +109,191 @@ namespace qmb {
     // Insert
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    void AcceleratedLinkedList<T, K, order_fn>::insert(const K& id, std::unique_ptr<T>&& obj)
+    template <class K, class T, order_pfn_t<T> order_fn>
+    void AcceleratedLinkedList<K, T, order_fn>::insert(const K& id, std::unique_ptr<T>&& obj)
     {
         if (!obj || m_LUT.contains(id)) return;
 
-        index_t idx = findInsertionIndex();
+        // Step 1: find node (reuse tail->next or append)
+        index_t target = findInsertionIndex();
 
-        if (idx == size()) m_Nodes.push_back({});
+        // Step 2: move object in
+        m_Nodes[target].value = std::move(obj);
 
-        Node& n = m_Nodes[idx];
-        n.value = std::move(obj);
-        n.prev = tail;
-        n.next = NULL_INDEX;
+        // Step 3: register in LUT
+        m_LUT[id] = target;
 
-        if (tail != NULL_INDEX)
-            m_Nodes[tail].next = idx;
+        // Step 4: find where to insert in live list
+        index_t prev = findInsertionNeighbors(*m_Nodes[target].value);
+
+        if (prev == NULL_LINK)
+        {
+            // insert at head
+            m_Nodes[target].prev = NULL_LINK;
+            m_Nodes[target].next = m_Head;
+
+            if (m_Head != NULL_LINK)
+                m_Nodes[m_Head].prev = target;
+
+            m_Head = target;
+            if (m_Tail == NULL_LINK) m_Tail = target;
+        }
         else
-            head = idx;
+        {
+            // insert after prev
+            index_t next = m_Nodes[prev].next;
+            m_Nodes[target].prev = prev;
+            m_Nodes[target].next = next;
+            m_Nodes[prev].next = target;
 
-        tail = idx;
-        m_LUT[id] = idx;
-        logical_size++;
+            if (next != NULL_LINK)
+                m_Nodes[next].prev = target;
+            else
+                m_Tail = target;
+        }
+
+        ++m_AliveCount;
     }
+
+
 
     // --------------------------------------------------
     // Remove
     // --------------------------------------------------
 
-    // old version:
-    template <class T, class K, order_pfn_t<T> order_fn>
-    void AcceleratedLinkedList<T, K, order_fn>::remove(index_t idx)
+
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    void AcceleratedLinkedList<K, T, order_fn>::remove(const K& id)
     {
-        if (idx >= size() || !m_Nodes[idx].value)
-            return;
+        // Don't destroy what isn't there
+        if (!m_LUT.contains(id) || m_AliveCount == 0) return;
 
-        Node& n = m_Nodes[idx];
-        index_t p = n.prev;
-        index_t nx = n.next;
+        // get the index of the target node
+        index_t target = m_LUT[id];
+        index_t prev = m_Nodes[target].prev;
+        index_t next = m_Nodes[target].next;
 
-        // unlink from live list
-        if (p != NULL_INDEX) m_Nodes[p].next = nx;
-        else head = nx;
+        // update sister node pointers, if applicable.
+        if (prev != NULL_LINK) m_Nodes[prev].next = next;
+        if (next != NULL_LINK) m_Nodes[next].prev = prev;
 
-        if (nx != NULL_INDEX) m_Nodes[nx].prev = p;
-        else tail = p;
+        // if it's the head or tail, we update those values, too
+        if (target == m_Head) m_Head = m_Nodes[m_Head].next;
+        if (target == m_Tail) m_Tail = m_Nodes[m_Tail].prev;
 
-        // zombify
-        index_t zombie_head =
-            (tail != NULL_INDEX) ? m_Nodes[tail].next : NULL_INDEX;
+        // destroy the asset
+        m_Nodes[target].value.reset();
 
-        n.prev = tail;
-        n.next = zombie_head;
+        index_t tail_next = NULL_LINK;
+        if (m_Tail != NULL_LINK) {
+            tail_next = m_Nodes[m_Tail].next;
+            // tail should point to this node
+            m_Nodes[m_Tail].next = target;
+        }
+        if (tail_next != NULL_LINK) m_Nodes[tail_next].prev = target;
 
-        if (tail != NULL_INDEX)
-            m_Nodes[tail].next = idx;
+        m_Nodes[target].prev = m_Tail;
+        m_Nodes[target].next = tail_next;
 
-        if (zombie_head != NULL_INDEX)
-            m_Nodes[zombie_head].prev = idx;
 
-        m_LUT.erase(n.name_hash);
-        n.name_hash = 0;
-        n.value.reset();
-        logical_size--;
+        // cleanup stuff
+        m_LUT.erase(id);
+        // always decrement
+        m_AliveCount--;
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    void AcceleratedLinkedList<T, K, order_fn>::remove(const K& id)
+    template <class K, class T, order_pfn_t<T> order_fn>
+    void AcceleratedLinkedList<K, T, order_fn>::clear()
     {
-        // Early exit if empty
-        if (head == NULL_INDEX || tail == NULL_INDEX) return;
+        m_LUT.clear();
+        m_Nodes.clear();
+        m_Head = NULL_LINK;
+        m_Tail = NULL_LINK;
 
-        // from here on, we assume:
-        assert(head != NULL_INDEX && tail != NULL_INDEX);
-
-        auto it = m_LUT.find(id);
-        // don't delete what isn't there
-        if (it == m_LUT.end()) return;
-        
-        // from here on we assume:
-        assert(m_LUT.contains(id));
-
-        index_t target_idx = it->second;
-
-        // from here on we assume, by the rules of insertion:
-        assert(target_idx != NULL_INDEX);
-        // and also
-        assert(target_idx >= 0 && target_idx < size());
-
-        // therefore this should always be legal
-        auto& target = m_Nodes[target_idx];
-
-
-        // we always need to destroy the T, so just do that before we enter complicated logic
-        m_Nodes[target_idx].value.reset();
-
-        index_t prev = target.prev;
-        index_t next = target.next;
-
-        //if(prev !=NULL_INDEX)
-
-
-
-
-
-        
     }
-
-    template <class T, class K, order_pfn_t<T> order_fn>
-    void AcceleratedLinkedList<T, K, order_fn>::clear()
-    {
-        while (head != NULL_INDEX)
-            remove(head);
-    }
-
 
     // --------------------------------------------------
     // Iterator
     // --------------------------------------------------
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    struct qmb::AcceleratedLinkedList<T, K, order_fn>::iterator {
-        using difference_type = std::ptrdiff_t;
-        using value_type = T;
-        using pointer = T*;
-        using reference = T&;
-        using iterator_category = std::bidirectional_iterator_tag;
+    template <class K, class T, order_pfn_t<T> order_fn>
+    AcceleratedLinkedList<K, T, order_fn>::iterator::iterator(AcceleratedLinkedList* list, index_t idx) :
+        m_List(list),
+        m_Index(idx)
+    {}
 
-    private:
-        AcceleratedLinkedList<T, K, order_fn>* list = nullptr;
-        index_t current = NULL_INDEX;
-
-    public:
-        iterator() = default;
-        iterator(AcceleratedLinkedList<T, K, order_fn>* l, index_t idx) : list(l), current(idx) {}
-
-        reference operator*() const { return *list->m_Nodes[current].get(); }
-        pointer operator->() const { return list->m_Nodes[current].get(); }
-
-        iterator& operator++() {
-            if (current != NULL_INDEX) {
-                current = list->m_Nodes[current].next;
-            }
-            return *this;
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator::reference
+        AcceleratedLinkedList<K, T, order_fn>::iterator::operator*() const {
+        assert(m_List);
+        assert(m_Index != NULL_LINK);
+        auto* p = m_List->m_Nodes[m_Index].value.get();
+        if (p == nullptr)
+        {
+            __debugbreak();
         }
 
-        iterator operator++(int) {
-            iterator tmp = *this;
-            ++(*this);
-            return tmp;
-        }
-
-        iterator& operator--() {
-            if (current == NULL_INDEX) {
-                // If at end(), go to tail
-                current = list->tail;
-            }
-            else {
-                current = list->m_Nodes[current].prev;
-            }
-            return *this;
-        }
-
-        iterator operator--(int) {
-            iterator tmp = *this;
-            --(*this);
-            return tmp;
-        }
-
-        bool operator==(const iterator& rhs) const {
-            return list == rhs.list && current == rhs.current;
-        }
-
-        bool operator!=(const iterator& rhs) const { return current != rhs.current; }
-    };
-
-    // --------------------------------------------------
-    // begin/end
-    // --------------------------------------------------
-
-    template <class T, class K, order_pfn_t<T> order_fn>
-    typename qmb::AcceleratedLinkedList<T, K, order_fn>::iterator qmb::AcceleratedLinkedList<T, K, order_fn>::begin() {
-        return iterator(this, head);
+        assert(p != nullptr);
+        return *p;
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    typename qmb::AcceleratedLinkedList<T, K, order_fn>::iterator qmb::AcceleratedLinkedList<T, K, order_fn>::end() {
-        return iterator(this, NULL_INDEX);
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator::pointer
+        AcceleratedLinkedList<K, T, order_fn>::iterator::operator->() const {
+
+        T* target = &(**this);
+
+        assert(target);
+
+        return target;
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    typename qmb::AcceleratedLinkedList<T, K, order_fn>::iterator qmb::AcceleratedLinkedList<T, K, order_fn>::rbegin() {
-        return iterator(this, tail);
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator&
+        AcceleratedLinkedList<K, T, order_fn>::iterator::operator++() {
+        assert(m_List);
+        if (m_Index != NULL_LINK) {
+            m_Index = m_List->m_Nodes[m_Index].next;
+        }
+
+
+        return *this;
     }
 
-    template <class T, class K, order_pfn_t<T> order_fn>
-    typename qmb::AcceleratedLinkedList<T, K, order_fn>::iterator qmb::AcceleratedLinkedList<T, K, order_fn>::rend() {
-        return iterator(this, NULL_INDEX);
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator
+        AcceleratedLinkedList<K, T, order_fn>::iterator::operator++(int) {
+        iterator tmp = *this;
+        ++(*this);
+        return tmp;
     }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    bool AcceleratedLinkedList<K, T, order_fn>::iterator::operator==(
+        const iterator& other
+        ) const {
+        return m_List == other.m_List && m_Index == other.m_Index;
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    bool AcceleratedLinkedList<K, T, order_fn>::iterator::operator!=(
+        const iterator& other
+        ) const {
+        return !(*this == other);
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator AcceleratedLinkedList<K, T, order_fn>::begin() {
+        return iterator(this, m_Head);
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::iterator AcceleratedLinkedList<K, T, order_fn>::end() {
+        return iterator(this, m_Tail); // was NULL_LINK
+    }
+
+
 
 
 } // namespace qmb

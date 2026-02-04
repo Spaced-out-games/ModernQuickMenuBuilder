@@ -14,10 +14,13 @@
 
 namespace qmb {
 
+    // Describes a raw index in the vector
     using index_t = uint32_t;
+    // Describes a pointer to another node, at least conceptually. 
+    using node_ptr_t = index_t;
 
 
-    constexpr index_t NULL_INDEX = std::numeric_limits<index_t>::max();
+    constexpr index_t NULL_LINK = std::numeric_limits<index_t>::max();
     using splice_t = std::pair<index_t, index_t>;
     template <class T>
     using order_pfn_t = bool(*)(const T&, const T&);
@@ -34,21 +37,26 @@ namespace qmb {
     /// reshuffle items when resizing, or update hash map keys.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    template <class T, class K = std::string, order_pfn_t<T> order_fn = nullptr>
+    template <class K, class T, order_pfn_t<T> order_fn = nullptr>
     struct AcceleratedLinkedList
     {
 
+        struct iterator;
+
+        iterator begin();
+        iterator end();
 
         /// <summary>
         /// Linked list node
         /// </summary>
         struct Node
         {
-            std::unique_ptr<T> value;
-            index_t prev = NULL_INDEX;
-            index_t next = NULL_INDEX;
+            std::unique_ptr<T> value = nullptr;
+            index_t prev = NULL_LINK;
+            index_t next = NULL_LINK;
 
             T* get() noexcept;
+            T& operator*() noexcept;
         };
 
         /// The pool of nodes
@@ -58,13 +66,13 @@ namespace qmb {
         std::unordered_map<K, index_t> m_LUT;
 
         // Head of the linked list
-        index_t head = NULL_INDEX;
+        index_t m_Head = NULL_LINK;
 
         // Tail of the linked list
-        index_t tail = NULL_INDEX;
+        index_t m_Tail = NULL_LINK;
 
         // Number of nodes actively in use
-        size_t logical_size = 0;
+        size_t m_AliveCount = 0;
 
         // Number of alive and dead nodes in the linked list
         size_t size() const;
@@ -75,19 +83,16 @@ namespace qmb {
         size_t capacity() const;
 
         // Finds where in the vector to insert another node.
-        index_t findInsertionIndex() const;
+        index_t findInsertionIndex();
 
-        // Finds where in the linked list to insert between.
-        splice_t findInsertionNeighbors() const;
+        // Finds where in the linked list to insert in front of
+        index_t findInsertionNeighbors(const T& item) const;
 
         // Gets a node by ID
         T* get(const K& id);
 
         // Inserts a node by ID
         void insert(const K& id, std::unique_ptr<T>&& obj);
-
-        // Removes a node by index
-        void remove(index_t idx);
 
         // Removes a node by ID
         void remove(const K& id);
@@ -98,15 +103,35 @@ namespace qmb {
         // Array access operator, by ID
         T* operator[](const K& id);
 
-        // -------------------
-        // Iterator declaration (bidirectional)
-        struct iterator;
-        iterator begin();
-        iterator end();
+        class iterator {
+            AcceleratedLinkedList* m_List = nullptr;
+            index_t                 m_Index = NULL_LINK;
+        public:
+            using iterator_category = std::forward_iterator_tag;
+            using value_type = T;
+            using difference_type = std::ptrdiff_t;
+            using pointer = T*;
+            using reference = T&;
 
-        // Optional: reverse helpers using same iterator
-        iterator rbegin(); // starts at tail
-        iterator rend();   // points before head
+            iterator(AcceleratedLinkedList* list, index_t idx);
+
+            reference operator*() const;
+
+            pointer operator->() const;
+
+            iterator& operator++();
+
+            iterator operator++(int);
+
+            bool operator==(const iterator& other) const;
+
+            bool operator!=(const iterator& other) const;
+
+
+        };
+
+
+
     };
 
 } // namespace qmb

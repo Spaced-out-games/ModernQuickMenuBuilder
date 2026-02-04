@@ -1,5 +1,5 @@
-
-/* Test driver code for AcceleratedLinkedList  */
+/*
+// Test driver code for AcceleratedLinkedList
 #include "Backend/qmb/AcceleratedLinkedList.h"
 #include <cassert>
 #include <iostream>
@@ -18,15 +18,14 @@ int main()
 
 
 }
-/* ------------------------------------ */
+
+
+*/
 
 
 
 
 
-
-
-/* App code
 #include "Backend/vgui/vgui_event_win32_impl.h"
 #include "Backend/vgui/vgui_window.h"
 #include "Backend/vgui/vgui_event.h"
@@ -98,4 +97,3 @@ int main()
 	}
 
 }
-*/  

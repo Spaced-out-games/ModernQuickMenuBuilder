@@ -7,7 +7,7 @@
 namespace vgui
 {
 	// Represents a set of sister widgets that should never overlap
-	struct Layer : qmb::AcceleratedLinkedList<Widget> {
+	struct Layer : qmb::AcceleratedLinkedList<std::string, Widget> {
 		int z = INT_MIN;
 		bool operator<(const Layer& rhs) const { return z < rhs.z; } // this might be the wrong sign
 		Layer() = default;
