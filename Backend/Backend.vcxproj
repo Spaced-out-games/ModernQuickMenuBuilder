@@ -39,6 +39,9 @@
     <ClInclude Include="platform\win32\WidgetBase.h" />
     <ClInclude Include="platform\win32\WidgetCallback.h" />
     <ClInclude Include="platform\win32\Window.h" />
+    <ClInclude Include="vgui\widget_builder\widget_builder.h" />
+    <ClInclude Include="woodchuck\sink.h" />
+    <ClInclude Include="woodchuck\woodchuck.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="platform\win32\Application.cpp" />
@@ -57,9 +60,14 @@
     <ClCompile Include="vgui\vgui_layerstack.cpp" />
     <ClCompile Include="vgui\vgui_widget.cpp" />
     <ClCompile Include="vgui\vgui_window.cpp" />
+    <ClCompile Include="vgui\widget_builder\widget_builder.cpp" />
+    <ClCompile Include="woodchuck\sink.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="woodchuck\woodchuck.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

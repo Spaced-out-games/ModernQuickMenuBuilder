@@ -75,11 +75,17 @@
     <ClInclude Include="vgui\vgui.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="woodchuck\woodchuck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="woodchuck\sink.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgui\widget_builder\widget_builder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="platform\win32\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="platform\win32\Image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -125,8 +131,22 @@
     <ClCompile Include="vgui\vgui_event.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="platform\win32\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="woodchuck\sink.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgui\widget_builder\widget_builder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="app.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="woodchuck\woodchuck.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
