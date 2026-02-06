@@ -1,5 +1,6 @@
 #include "QMBApplication.h"
 #include "../vgui/vgui_event.h"
+#include "../woodchuck/woodchuck.h"
 
 namespace qmb {
 	void QMBApplication::fire(const vgui::Event& evt) {
@@ -14,7 +15,8 @@ namespace qmb {
 		// notify the layers to the destructor being called
 		fire(evt);
 		status = 1;
-		std::cout << msg;
+		woodchuck::info("{}", msg);
+
 	}
 
 	void QMBApplication::link_window(vgui::VWindow& window)
