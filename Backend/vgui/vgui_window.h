@@ -21,7 +21,6 @@ namespace vgui
 		// Pointer to function that handles resizing
 		void (*resize_interrupt_pfn)(VWindow&) = nullptr;
 		native::Application* m_Owner = nullptr;
-		Context* m_vguiContext = nullptr;
 		LayerStack m_LayerStack;
 
 		VWindow(native::Application* app);

@@ -1,4 +1,4 @@
-#include "vgui_window.h"
+﻿#include "vgui_window.h"
 #include "vgui_event_win32_impl.h"
 
 
@@ -23,56 +23,121 @@ namespace vgui
 	}
     LRESULT VWindow::on_event(UINT msg, WPARAM wp, LPARAM lp)
     {
-        // we interrupt active resize events and prevent their propagation
-        if (msg == WM_SIZING) {
-            if (!m_MaintainAspectRatio) return 0;
-            RECT* r = (RECT*)lp;
+        if (msg == WM_SIZING)
+        {
+            if (!m_MaintainAspectRatio)
+                return 0;
+
+            RECT* r = reinterpret_cast<RECT*>(lp);
+
             int w = r->right - r->left;
             int h = r->bottom - r->top;
-            int new_w;
-            int new_h;
-            switch (wp) {
-                case WMSZ_LEFT:
-                    new_h = (int)(w / m_Aspect_ratio);
-                    r->top = r->bottom - new_h;
-                    break;
-                case WMSZ_RIGHT:
-                    new_h = (int)(w / m_Aspect_ratio);
-                    r->bottom = r->top + new_h;
-                    break;
-                case WMSZ_TOP:
-                    new_w = (int)(h * m_Aspect_ratio);
-                    r->left = r->right - new_w;
-                    break;
-                case WMSZ_BOTTOM:
-                    new_w = (int)(h * m_Aspect_ratio);
-                    r->right = r->left + new_w;
-                    break;
-                default:
-                    // get new width and height so that they respect the aspect ratio
-                    // in terms of the current height
-                    // compare these versus the old dimensions. Whichever axis
-                    // isn't dominant gets updated
-                    break;
 
+            const float aspect = m_Aspect_ratio;
+
+            int new_w = w;
+            int new_h = h;
+
+            auto adjust_from_width = [&]() {
+                new_h = static_cast<int>(new_w / aspect);
+            };
+
+            auto adjust_from_height = [&]() {
+                new_w = static_cast<int>(new_h * aspect);
+            };
+
+            switch (wp)
+            {
+                // ───────────── edges ─────────────
+            case WMSZ_LEFT:
+            case WMSZ_RIGHT:
+                adjust_from_width();
+                break;
+
+            case WMSZ_TOP:
+            case WMSZ_BOTTOM:
+                adjust_from_height();
+                break;
+
+                // ───────────── corners ─────────────
+            case WMSZ_TOPLEFT:
+            case WMSZ_TOPRIGHT:
+            case WMSZ_BOTTOMLEFT:
+            case WMSZ_BOTTOMRIGHT:
+            {
+                int h_from_w = static_cast<int>(w / aspect);
+                int w_from_h = static_cast<int>(h * aspect);
+
+                // Choose dominant axis (smaller correction feels better)
+                if (abs(h_from_w - h) < abs(w_from_h - w))
+                {
+                    new_h = h_from_w;
+                }
+                else
+                {
+                    new_w = w_from_h;
+                }
+                break;
             }
+            }
+
+            // ───────────── apply rect changes ─────────────
+            switch (wp)
+            {
+            case WMSZ_LEFT:
+                r->left = r->right - new_w;
+                r->bottom = r->top + new_h;
+                break;
+
+            case WMSZ_RIGHT:
+                r->right = r->left + new_w;
+                r->bottom = r->top + new_h;
+                break;
+
+            case WMSZ_TOP:
+                r->top = r->bottom - new_h;
+                r->right = r->left + new_w;
+                break;
+
+            case WMSZ_BOTTOM:
+                r->bottom = r->top + new_h;
+                r->right = r->left + new_w;
+                break;
+
+            case WMSZ_TOPLEFT:
+                r->left = r->right - new_w;
+                r->top = r->bottom - new_h;
+                break;
+
+            case WMSZ_TOPRIGHT:
+                r->right = r->left + new_w;
+                r->top = r->bottom - new_h;
+                break;
+
+            case WMSZ_BOTTOMLEFT:
+                r->left = r->right - new_w;
+                r->bottom = r->top + new_h;
+                break;
+
+            case WMSZ_BOTTOMRIGHT:
+                r->right = r->left + new_w;
+                r->bottom = r->top + new_h;
+                break;
+            }
+
             return 0;
         }
 
-
-        
-
-
-
-        // we take the event, convert it, and add it to the queue
+        // ───────────── normal event path ─────────────
         vgui::Event evt;
         vgui::vgui_event_win32_impl(m_Owner, evt, msg, wp, lp);
-        if (evt.type == EventType::LIFETIME_NULL_EVENT) return 0;
-        
-        
+        if (evt.type == EventType::LIFETIME_NULL_EVENT)
+            return 0;
+
         m_LayerStack.on_event(evt);
         return 0;
     }
+
 
     /*
     void VWindow::init(HINSTANCE application, LPWSTR title, int x, int y, int w, int h)
