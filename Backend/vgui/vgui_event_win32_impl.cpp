@@ -1,5 +1,5 @@
 #include "vgui_event_win32_impl.h"
-
+#include "../woodchuck/woodchuck.h"
 
 namespace vgui
 {
@@ -237,12 +237,14 @@ namespace vgui
 
         if (!app) {
             __debugbreak();
-            std::cout << "Invalid Application*!";
+            woodchuck::fatal("Invalid Application*!");
+
             throw std::runtime_error("Invalid Application*!");
         }
         if (!app->m_Window) {
             __debugbreak();
-            std::cout << "Invalid Window*!";
+            woodchuck::fatal("Invalid Window*!");
+
             throw std::runtime_error("Invalid Window*!");
         }
 
@@ -348,12 +350,14 @@ namespace vgui
     void Event_dtor_impl(Event& evt)
     {
         if (!evt.app) {
-            std::cout << "Invalid Application*!";
+
+            woodchuck::fatal("Invalid Application*!");
             throw std::runtime_error("Invalid Application*!");
         }
 
         if (!evt.app->m_Window) {
-            std::cout << "Invalid Window*!";
+            woodchuck::fatal("Invalid Window*!");
+
             throw std::runtime_error("Invalid Window*!");
         }
 

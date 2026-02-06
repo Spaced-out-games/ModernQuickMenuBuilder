@@ -1,4 +1,5 @@
 #include "vgui_button.h"
+#include "../woodchuck/woodchuck.h"
 
 namespace vgui
 {
@@ -15,7 +16,7 @@ namespace vgui
     bool VButton::on_event(const Event& evt) {
 
         if (evt.type == EventType::LIFETIME_DTOR_EVENT) {
-            std::cout << "VButton got the dtor event\n";
+            woodchuck::info("VButton got the dtor event");
         }
 
         if (evt.type == EventType::MOUSE_CLICK_EVENT && overlaps(evt.mouse_event.x, evt.mouse_event.y))

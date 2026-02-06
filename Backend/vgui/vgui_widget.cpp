@@ -3,7 +3,7 @@
 #include "vgui_error.h"
 #include <format>
 #include "thirdparty/json/json.hpp"
-
+#include "../woodchuck/woodchuck.h"
 
 using json = nlohmann::json;
 
@@ -42,12 +42,12 @@ namespace vgui
     bool Widget::on_event(const Event& evt)
     {
         if (!evt.app) {
-            std::cout << "Invalid Application*!";
+            woodchuck::fatal("Invalid Application*!");
             throw std::runtime_error("Invalid Application*!");
         }
 
         if (!evt.app->m_Window) {
-            std::cout << "Invalid Window*!";
+            woodchuck::fatal("Invalid Window*!");
             throw std::runtime_error("Invalid Window*!");
         }
 
