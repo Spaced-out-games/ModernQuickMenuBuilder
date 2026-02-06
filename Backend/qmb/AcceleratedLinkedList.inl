@@ -103,6 +103,11 @@ namespace qmb {
         return get(id);
     }
 
+    template <class K, class T, order_pfn_t<T> order_fn>
+    bool AcceleratedLinkedList<K, T, order_fn>::contains(const K& id) {
+        return m_LUT.contains(id);
+    }
+
 
 
     // --------------------------------------------------
@@ -213,8 +218,51 @@ namespace qmb {
 
     }
 
+    template <class K, class T, order_pfn_t<T> order_fn>
+    std::unique_ptr<T> AcceleratedLinkedList<K, T, order_fn>::take(const K& id)
+    {
+        auto it = m_LUT.find(id);
+        if (it == m_LUT.end() || m_AliveCount == 0)
+            return nullptr;
+
+        index_t target = it->second;
+        index_t prev = m_Nodes[target].prev;
+        index_t next = m_Nodes[target].next;
+
+        // Unlink from live list
+        if (prev != NULL_LINK) m_Nodes[prev].next = next;
+        if (next != NULL_LINK) m_Nodes[next].prev = prev;
+
+        if (target == m_Head) m_Head = next;
+        if (target == m_Tail) m_Tail = prev;
+
+        // Remove from LUT
+        m_LUT.erase(id);
+
+        // Decrement alive count
+        --m_AliveCount;
+
+        // Take ownership of the object
+        std::unique_ptr<T> result = std::move(m_Nodes[target].value);
+
+        // Insert node into dead list (after tail)
+        index_t tail_next = NULL_LINK;
+        if (m_Tail != NULL_LINK) {
+            tail_next = m_Nodes[m_Tail].next;
+            m_Nodes[m_Tail].next = target;
+        }
+        if (tail_next != NULL_LINK) m_Nodes[tail_next].prev = target;
+
+        m_Nodes[target].prev = m_Tail;
+        m_Nodes[target].next = tail_next;
+
+        return result;
+    }
+
+
+
     // --------------------------------------------------
-    // Iterator
+    // Forward Iterator
     // --------------------------------------------------
 
     template <class K, class T, order_pfn_t<T> order_fn>
@@ -290,7 +338,71 @@ namespace qmb {
 
     template <class K, class T, order_pfn_t<T> order_fn>
     typename AcceleratedLinkedList<K, T, order_fn>::iterator AcceleratedLinkedList<K, T, order_fn>::end() {
-        return iterator(this, m_Tail); // was NULL_LINK
+        return iterator(this, NULL_LINK); // was NULL_LINK
+    }
+
+    // --------------------------------------------------
+    // Backward Iterator
+    // --------------------------------------------------
+
+    // Constructor
+    template <class K, class T, order_pfn_t<T> order_fn>
+    AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::reverse_iterator(AcceleratedLinkedList* list, index_t idx)
+        : m_List(list), m_Index(idx) {}
+
+    // Dereference
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T& AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator*() const {
+        assert(m_List && m_Index != NULL_LINK);
+        T* ptr = m_List->m_Nodes[m_Index].value.get();
+        assert(ptr != nullptr);
+        return *ptr;
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    T* AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator->() const {
+        return m_List->m_Nodes[m_Index].value.get();
+    }
+
+    // Move backwards
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::reverse_iterator&
+        AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator++() {
+        m_Index = m_List->m_Nodes[m_Index].prev;
+        return *this;
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::reverse_iterator
+        AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator++(int) {
+        reverse_iterator tmp = *this;
+        ++(*this);
+        return tmp;
+    }
+
+    // Comparisons
+    template <class K, class T, order_pfn_t<T> order_fn>
+    bool AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator==(const reverse_iterator& other) const {
+        return m_List == other.m_List && m_Index == other.m_Index;
+    }
+
+    template <class K, class T, order_pfn_t<T> order_fn>
+    bool AcceleratedLinkedList<K, T, order_fn>::reverse_iterator::operator!=(const reverse_iterator& other) const {
+        return !(*this == other);
+    }
+
+    // rbegin() — points to the last element (tail)
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::reverse_iterator
+        AcceleratedLinkedList<K, T, order_fn>::rbegin() {
+        return reverse_iterator(this, m_Tail);
+    }
+
+    // rend() — past-the-head (NULL_LINK)
+    template <class K, class T, order_pfn_t<T> order_fn>
+    typename AcceleratedLinkedList<K, T, order_fn>::reverse_iterator
+        AcceleratedLinkedList<K, T, order_fn>::rend() {
+        return reverse_iterator(this, NULL_LINK);
     }
 
 

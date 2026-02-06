@@ -42,10 +42,11 @@ namespace qmb {
     {
 
         struct iterator;
-
+        struct reverse_iterator;
         iterator begin();
         iterator end();
-
+        reverse_iterator rbegin();
+        reverse_iterator rend();
         /// <summary>
         /// Linked list node
         /// </summary>
@@ -91,6 +92,8 @@ namespace qmb {
         // Gets a node by ID
         T* get(const K& id);
 
+        bool contains(const K& id);
+
         // Inserts a node by ID
         void insert(const K& id, std::unique_ptr<T>&& obj);
 
@@ -99,6 +102,8 @@ namespace qmb {
 
         // Clears the linked list
         void clear();
+
+        std::unique_ptr<T> take(const K& id);
 
         // Array access operator, by ID
         T* operator[](const K& id);
@@ -128,6 +133,22 @@ namespace qmb {
             bool operator!=(const iterator& other) const;
 
 
+        };
+
+        struct reverse_iterator {
+            AcceleratedLinkedList* m_List;
+            index_t m_Index;
+
+            reverse_iterator(AcceleratedLinkedList* list, index_t idx);
+
+            T& operator*() const;
+            T* operator->() const;
+
+            reverse_iterator& operator++();       // pre-increment
+            reverse_iterator operator++(int);     // post-increment
+
+            bool operator==(const reverse_iterator& other) const;
+            bool operator!=(const reverse_iterator& other) const;
         };
 
 
