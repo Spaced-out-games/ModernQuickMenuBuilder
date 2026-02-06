@@ -3,6 +3,7 @@
 #include "../platform/win32/Image.h"
 #include "vgui.h"
 #include "vgui_window.h"
+#include "../woodchuck/woodchuck.h"
 
 namespace vgui
 {
@@ -19,7 +20,8 @@ namespace vgui
     bool VBackground::on_event(const Event& evt) {
 
         if (evt.type == EventType::LIFETIME_DTOR_EVENT) {
-            std::cout << "VBackground got the dtor event";
+
+            woodchuck::info("VBackground got the dtor event");
         }
 
         if (evt.type == EventType::WINDOW_RESIZE_EVENT)
@@ -32,12 +34,14 @@ namespace vgui
         return 0;
         
     }
-    VBackground::VBackground(native::WidgetBase& owner) {
+    VBackground::VBackground(native::WidgetBase& owner, const std::string& img_path) 
+    {
+        qmb::load_image(img, img_path);
+
         x = owner.bounds().left;
         y = owner.bounds().top;
         w = owner.bounds().right - x;
         h = owner.bounds().bottom - y;
-
 
     }
 

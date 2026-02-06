@@ -31,7 +31,7 @@ namespace vgui
         /// Constructs a vgui Background widget
         /// </summary>
         /// <param name="owner">The native widget that is to own this Background</param>
-        VBackground(native::WidgetBase& owner);
+        VBackground(native::WidgetBase& owner, const std::string& img_path);
 
     };
 }
